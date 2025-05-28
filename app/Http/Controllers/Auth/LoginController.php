@@ -16,9 +16,9 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials)) {
             // On success, sign user in
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
@@ -26,7 +26,7 @@ class LoginController extends Controller
 
         // On failure, redirect back with error
         return back()->withErrors([
-            'login' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى!',
+            'error' => 'رقم الهاتف أو كلمة المرور غير صحيحة !',
         ]);
     }
 
