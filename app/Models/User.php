@@ -51,4 +51,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class);
+    }
 }
