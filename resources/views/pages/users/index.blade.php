@@ -116,19 +116,21 @@
                                         data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasAddUser"
                                         data-user='@json($user)'>
-                                        <i class="ti ti-edit ti-md"></i>
-                                        </a>
-
+                                            <i class="ti ti-edit ti-md"></i>
+                                    </a>
                                     <a href="javascript:;"
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-md"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end m-0">
-                                        <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">
-                                            حذف
-                                        </a>
-
-                                        <a href="javascript:;" class="dropdown-item">تعطيل</a>
-                                    </div>
+                                        data-bs-toggle="dropdown">
+                                            <i class="ti ti-dots-vertical ti-md"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-end m-0">
+                                                <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">حذف</a>
+                                                <a href="javascript:;"
+                                                    class="dropdown-item toggle-status"
+                                                    data-id="{{ $user->id }}"
+                                                    data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+                                                    {{ $user->is_active ? 'تعطيل' : 'تفعيل' }}
+                                                </a>
+                                            </div>
                                 </div>
                             </td>
                         </tr>

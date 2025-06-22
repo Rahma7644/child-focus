@@ -66,7 +66,7 @@ class UserController extends Controller
                 'birth_date',
             ]);
 
-            // Only update password if it's provided
+            // update password if it's provided
             if ($request->filled('password')) {
                 $data['password'] = Hash::make($request->password);
             }
@@ -92,5 +92,19 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'حدث خطأ أثناء حذف المستخدم'], 500);
         }
+    }
+
+    /**
+     * Change user state
+     */
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return response()->json([
+            'message' => $user->is_active ? 'تم تفعيل المستخدم بنجاح'  : 'تم تعطيل المستخدم بنجاح'
+        ]);
     }
 }

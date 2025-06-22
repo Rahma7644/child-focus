@@ -297,6 +297,57 @@ $(function () {
         $('#userForm').removeData('mode');
     });
 
+    // toggle status
+    $(document).on('click', '.toggle-status', function () {
+        let $btn = $(this);
+        let userId = $btn.data('id');
+        let currentStatus = $btn.data('status');
+        let actionText = currentStatus === 'active' ? 'تعطيل' : 'تفعيل';
+
+        Swal.fire({
+            text: `هل أنت متأكد أنك تريد ${actionText} هذا المستخدم؟`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم',
+            cancelButtonText: 'إلغاء',
+            customClass: {
+                confirmButton: 'btn btn-warning me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/users/${userId}/status`,
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'فشل في تغيير حالة المستخدم',
+                            customClass: {
+                                confirmButton: 'btn btn-danger'
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     // ? setTimeout used for multilingual table initialization
     setTimeout(() => {
@@ -393,40 +444,39 @@ $(function () {
             },
             password: {
                 validators: {
-                  callback: {
-                    message: 'كلمة المرور مطلوبة',
-                    callback: function(input) {
-                      // If mode is 'edit', password is optional
-                      if ($('#userForm').data('mode') === 'edit') {
-                        return true; // skip validation on edit
-                      }
-                      // Otherwise (add mode), password is required
-                      return input.value.trim().length > 0;
+                    callback: {
+                        message: 'كلمة المرور مطلوبة',
+                        callback: function(input) {
+                        // If mode is 'edit', password is optional
+                        if ($('#userForm').data('mode') === 'edit') {
+                            return true; // skip validation on edit
+                        }
+                        // Otherwise (add mode), password is required
+                        return input.value.trim().length > 0;
+                        }
                     }
-                  }
-                }
-              },
-              password_confirmation: {
-                validators: {
-                  callback: {
-                    message: 'تأكيد كلمة المرور مطلوب',
-                    callback: function(input) {
-                      if ($('#userForm').data('mode') === 'edit') {
-                        return true; // skip validation on edit
-                      }
-                      const passwordValue = userForm.querySelector('[name="password"]').value;
-                      return input.value.trim().length > 0 && input.value === passwordValue;
                     }
-                  },
-                  identical: {
-                    compare: function() {
-                      return userForm.querySelector('[name="password"]').value;
+                },
+                password_confirmation: {
+                    validators: {
+                    callback: {
+                        message: 'تأكيد كلمة المرور مطلوب',
+                        callback: function(input) {
+                        if ($('#userForm').data('mode') === 'edit') {
+                            return true; // skip validation on edit
+                        }
+                        const passwordValue = userForm.querySelector('[name="password"]').value;
+                        return input.value.trim().length > 0 && input.value === passwordValue;
+                        }
                     },
-                    message: 'كلمات المرور غير متطابقة'
-                  }
+                    identical: {
+                        compare: function() {
+                        return userForm.querySelector('[name="password"]').value;
+                        },
+                        message: 'كلمات المرور غير متطابقة'
+                    }
+                    }
                 }
-              }
-
         },
         plugins: {
             trigger: new FormValidation.plugins.Trigger(),

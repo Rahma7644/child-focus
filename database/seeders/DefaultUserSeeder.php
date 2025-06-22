@@ -21,7 +21,6 @@ class DefaultUserSeeder extends Seeder
             'gender' => 1, // Or 0, depending on your logic
             'is_active' => 1,
             'password' => Hash::make('password'),
-            'email_verified_at' => now(),
             ]
         );
     }
