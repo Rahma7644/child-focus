@@ -11,6 +11,7 @@ $configData = Helper::appClasses();
 $menuHorizontal = true;
 $navbarFull = true;
 
+
 /* Display elements */
 $isNavbar = ($isNavbar ?? true);
 $isMenu = ($isMenu ?? true);

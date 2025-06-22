@@ -18,7 +18,7 @@ $navbarDetached = ($navbarDetached ?? '');
       @if(isset($navbarFull))
         <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
           <a href="{{url('/')}}" class="app-brand-link">
-            <span class="app-brand-logo demo">@include('_partials.macros',["height"=>20])</span>
+            <span class="app-brand-logo demo">@include('_partials.macros', ["height" => 20])</span>
             <span class="app-brand-text demo menu-text fw-bold">{{config('variables.templateName')}}</span>
           </a>
           @if(isset($menuHorizontal))
@@ -31,7 +31,7 @@ $navbarDetached = ($navbarDetached ?? '');
 
       <!-- ! Not required for layout-without-menu -->
       @if(!isset($navbarHideToggle))
-        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ?' d-xl-none ' : '' }}">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0{{ isset($menuHorizontal) ? ' d-xl-none ' : '' }} {{ isset($contentNavbar) ? ' d-xl-none ' : '' }}">
           <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
             <i class="ti ti-menu-2 ti-md"></i>
           </a>
@@ -46,7 +46,7 @@ $navbarDetached = ($navbarDetached ?? '');
           <div class="nav-item navbar-search-wrapper mb-0">
             <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
               <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
-              <span class="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
+              <span class="d-none d-md-inline-block text-muted fw-normal">Search</span>
             </a>
           </div>
         </div>
@@ -54,7 +54,7 @@ $navbarDetached = ($navbarDetached ?? '');
         @endif
 
        <ul class="navbar-nav flex-row align-items-center ms-auto">
-          @if(isset($menuHorizontal))
+          {{-- @if(isset($menuHorizontal))
             <!-- Search -->
             <li class="nav-item navbar-search-wrapper">
               <a class="nav-link btn btn-text-secondary btn-icon rounded-pill search-toggler" href="javascript:void(0);">
@@ -62,9 +62,9 @@ $navbarDetached = ($navbarDetached ?? '');
               </a>
             </li>
             <!-- /Search -->
-          @endif
+          @endif --}}
 
-          <!-- Language -->
+          {{-- <!-- Language -->
           <li class="nav-item dropdown-language dropdown">
             <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class='ti ti-language rounded-circle ti-md'></i>
@@ -92,8 +92,8 @@ $navbarDetached = ($navbarDetached ?? '');
               </li>
             </ul>
           </li>
-          <!--/ Language -->
-
+          <!--/ Language --> --}}
+{{--
           @if($configData['hasCustomizer'] == true)
             <!-- Style Switcher -->
             <li class="nav-item dropdown-style-switcher dropdown">
@@ -202,6 +202,7 @@ $navbarDetached = ($navbarDetached ?? '');
             </div>
           </li>
           <!-- Quick links -->
+        --}}
 
           <!-- Notification -->
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">

@@ -7,7 +7,6 @@ use App\Models\Manager;
 use App\Models\Kindergarten;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 
 class RegistrationService
