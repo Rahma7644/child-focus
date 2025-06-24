@@ -29,10 +29,10 @@ class UserController extends Controller
         }
 
         // // Fetch users with the specified role
-        $users = User::all();
+        $users = User::whereHasRole($role)->get();
         return view('pages.users.index', [
             'users' => $users,
-             'role' => ucfirst($role), // Pass role for display
+            'role' => ucfirst($role),
         ]);
     }
 
@@ -88,9 +88,9 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
 
-            return response()->json(['status' => 'success', 'message' => 'تم حذف المستخدم بنجاح']);
+            return response()->json(['status' => 'success', 'message' => 'تمت أرشفة المستخدم بنجاح']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'حدث خطأ أثناء حذف المستخدم'], 500);
+            return response()->json(['status' => 'error', 'message' => 'حدث خطأ أثناء أرشفة المستخدم'], 500);
         }
     }
 

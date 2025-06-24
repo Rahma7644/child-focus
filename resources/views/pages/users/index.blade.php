@@ -5,19 +5,20 @@
 <!-- Vendor Styles -->
 @section('vendor-style')
     @vite([
-    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
-    'resources/assets/vendor/libs/select2/select2.scss',
-    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-    'resources/assets/vendor/libs/animate-css/animate.scss',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
-    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
-    'resources/assets/vendor/libs/pickr/pickr-themes.scss'
+        'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+        'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+        'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+        'resources/assets/vendor/libs/select2/select2.scss',
+        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+        'resources/assets/vendor/libs/animate-css/animate.scss',
+        'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
+        'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+        'resources/assets/vendor/libs/select2/select2.scss',
+        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+        'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+        'resources/assets/vendor/libs/pickr/pickr-themes.scss'
 
-])
+    ])
 @endsection
 
 <!-- Vendor Scripts -->
@@ -79,6 +80,12 @@
                     {{ $role == 'Manager' ? 'مسؤولي الروضة' : ($role == 'Teacher' ? 'المعلمين' : ($role == 'Parent' ? 'أولياء الأمر' : 'المستخدمين')) }}
                 </h5>
         </div>
+        <div class="card-header border-bottom">
+            <h5 class="card-title mb-0">الفلترة</h5>
+            <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
+                <div class="col-md-4 user_status"></div>
+            </div>
+        </div>
         <div class="card-datatable table-responsive">
             <table class="datatables-users table">
                 <thead class="border-top">
@@ -101,7 +108,7 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone }}</td>
+                            <td>0{{ $user->phone }}</td>
                             <td>{{ $user->birth_date }}</td>
                             <td>{{ $user->gender == '0' ? 'ذكر' : 'انثى' }}</td>
                             <td>
@@ -121,16 +128,19 @@
                                     <a href="javascript:;"
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow"
                                         data-bs-toggle="dropdown">
-                                            <i class="ti ti-dots-vertical ti-md"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-end m-0">
-                                                <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">حذف</a>
-                                                <a href="javascript:;"
-                                                    class="dropdown-item toggle-status"
-                                                    data-id="{{ $user->id }}"
-                                                    data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
-                                                    {{ $user->is_active ? 'تعطيل' : 'تفعيل' }}
-                                                </a>
-                                            </div>
+                                            <i class="ti ti-dots-vertical ti-md"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end m-0">
+                                            @if(!$user->is_active)
+                                                <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">أرشفة</a>
+                                            @endif
+                                            <a href="javascript:;"
+                                                class="dropdown-item toggle-status"
+                                                data-id="{{ $user->id }}"
+                                                data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+                                                {{ $user->is_active ? 'تعطيل' : 'تفعيل' }}
+                                            </a>
+                                        </div>
                                 </div>
                             </td>
                         </tr>

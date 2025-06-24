@@ -5,9 +5,14 @@
 'use strict';
 
 $(function () {
+    const select2 = $('.select2'),
+        selectPicker = $('.selectpicker'),
+        flatpickrDisabledRange = document.querySelector('#birth_date');
+
     // Variable declaration for table
     var dt_user_table = $('.datatables-users'),
-        offCanvasForm = $('#offcanvasAddUser');
+        offCanvasForm = $('#offcanvasAddUser'),
+        statuses = ['مفعل', 'غير مفعل'];
 
     // Users datatable
     if (dt_user_table.length) {
@@ -203,17 +208,42 @@ $(function () {
         }
         });
     }
+// Status filter dropdown
+dt_user.columns(7)
+.every(function () {
+    var column = this;
+    var select = $(
+        '<select id="FilterTransaction" class="form-select"><option value="">الحالة</option></select>'
+    )
+        .appendTo('.user_status')
+        .on('change', function () {
+            var val = $(this).val();
 
+            if (val) {
+                // Trim any whitespace from the selected value
+                val = val.trim();
+                // Use a regex to match the value with optional whitespace around it
+                // \s* matches zero or more whitespace characters
+                column.search('^\\s*' + val + '\\s*$', true, false).draw();
+            } else {
+                // If no value selected, clear the search
+                column.search('', true, false).draw();
+            }
+        });
+
+    statuses.forEach(function (status) {
+        select.append('<option value="' + status + '">' + status + '</option>');
+    });
+});
     // Delete Record
     $(document).on('click', '.delete-record', function () {
         var user_id = $(this).data('id');
 
         Swal.fire({
-            title: 'هل انت متأكد؟',
-            text: 'لا يمكنك التراجع عن حذف المستخدم',
+            text: 'هل انت متأكد من أرشفة هذا المستخدم؟',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'نعم، احذف',
+            confirmButtonText: 'نعم',
             cancelButtonText: 'إلغاء',
             customClass: {
                 confirmButton: 'btn btn-warning me-3',
@@ -232,7 +262,6 @@ $(function () {
                     success: function (response) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'تم الحذف!',
                                 text: response.message,
                                 customClass: {
                                     confirmButton: 'btn btn-success'
@@ -246,7 +275,6 @@ $(function () {
                     error: function (response) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'خطأ',
                             text: response.message,
                             customClass: {
                                 confirmButton: 'btn btn-danger'
@@ -498,4 +526,18 @@ $(function () {
             fv.resetForm(true);
         });
 
+        if (flatpickrDisabledRange) {
+            const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
+            const toDate = new Date(Date.now() + 3600 * 1000 * 48);
+
+            flatpickrDisabledRange.flatpickr({
+            dateFormat: 'Y-m-d',
+            disable: [
+                {
+                from: fromDate.toISOString().split('T')[0],
+                to: toDate.toISOString().split('T')[0]
+                }
+            ]
+            });
+        }
 });

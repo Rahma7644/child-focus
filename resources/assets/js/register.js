@@ -250,19 +250,19 @@
         });
 
         // Disabled Date Range
-    if (flatpickrDisabledRange) {
-        const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
-        const toDate = new Date(Date.now() + 3600 * 1000 * 48);
+        if (flatpickrDisabledRange) {
+            const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
+            const toDate = new Date(Date.now() + 3600 * 1000 * 48);
 
-        flatpickrDisabledRange.flatpickr({
-        dateFormat: 'Y-m-d',
-        disable: [
-            {
-            from: fromDate.toISOString().split('T')[0],
-            to: toDate.toISOString().split('T')[0]
-            }
-        ]
-        });
-    }
+            flatpickrDisabledRange.flatpickr({
+            dateFormat: 'Y-m-d',
+            disable: [
+                {
+                from: fromDate.toISOString().split('T')[0],
+                to: toDate.toISOString().split('T')[0]
+                }
+            ]
+            });
+        }
     }
     })();
