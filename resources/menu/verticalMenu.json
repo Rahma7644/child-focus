@@ -25,6 +25,11 @@
             "url": "users/parent",
             "name": "أولياء الأمر",
             "slug": "users.parent"
+            },
+            {
+            "url": "users/archive",
+            "name": "الارشيف",
+            "slug": "users.archive"
             }
         ]
         }

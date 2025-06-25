@@ -5,20 +5,20 @@
 <!-- Vendor Styles -->
 @section('vendor-style')
     @vite([
-        'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
-        'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
-        'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
-        'resources/assets/vendor/libs/select2/select2.scss',
-        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-        'resources/assets/vendor/libs/animate-css/animate.scss',
-        'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
-        'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-        'resources/assets/vendor/libs/select2/select2.scss',
-        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-        'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
-        'resources/assets/vendor/libs/pickr/pickr-themes.scss'
+    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+    'resources/assets/vendor/libs/animate-css/animate.scss',
+    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
+    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+    'resources/assets/vendor/libs/select2/select2.scss',
+    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+    'resources/assets/vendor/libs/pickr/pickr-themes.scss'
 
-    ])
+])
 @endsection
 
 <!-- Vendor Scripts -->
@@ -46,7 +46,7 @@
 
 <!-- Page Scripts -->
 @section('page-script')
-    @vite(['resources/assets/js/users.js'])
+    @vite(['resources/assets/js/archive.js'])
 @endsection
 
 @section('content')
@@ -74,16 +74,15 @@
                     {{ session('error') }}
                 </div>
             @endif
-            </div>
-            <div class="card-header border-bottom">
-                <h5 class="card-title mb-0">
-                    {{ $role == 'Manager' ? 'مسؤولي الروضة' : ($role == 'Teacher' ? 'المعلمون' : ($role == 'Parent' ? 'أولياء الأمر' : 'المستخدمين')) }}
-                </h5>
+        </div>
+        <div class="card-header border-bottom">
+            <h5 class="card-title mb-0">
+                أرشيف المستخدمين</h5>
         </div>
         <div class="card-header border-bottom">
             <h5 class="card-title mb-0">الفلترة</h5>
             <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
-                <div class="col-md-4 user_status"></div>
+                <div class="col-md-4 user_role"></div>
             </div>
         </div>
         <div class="card-datatable table-responsive">
@@ -95,6 +94,7 @@
                         <th>الاسم</th>
                         <th>البريد الالكتروني</th>
                         <th>رقم الهاتف</th>
+                        <th>الدور</th>
                         <th>تاريخ الميلاد</th>
                         <th>الجنس</th>
                         <th>الحالة</th>
@@ -109,38 +109,49 @@
                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>0{{ $user->phone }}</td>
+                            <td>
+                                @foreach ($user->roles as $role)
+                                    @php
+                                        switch ($role->name) {
+                                            case 'manager':
+                                                $label = ' مدير روضة';
+                                                $class = 'bg-label-primary';
+                                                break;
+                                            case 'teacher':
+                                                $label = 'معلم';
+                                                $class = 'bg-label-info';
+                                                break;
+                                            case 'parent':
+                                                $label = 'ولي أمر';
+                                                $class = 'bg-label-success';
+                                                break;
+                                            default:
+                                                $label = $role->name;
+                                                $class = 'bg-label-secondary';
+                                        }
+                                    @endphp
+
+                                    <span class="badge {{ $class }} me-1">
+                                        {{ $label }}
+                                    </span>
+                                @endforeach
+                            </td>
+
                             <td>{{ $user->birth_date }}</td>
                             <td>{{ $user->gender == '0' ? 'ذكر' : 'انثى' }}</td>
                             <td>
-                                <span class="{{ $user->is_active == '1' ? 'badge bg-label-success' : 'badge bg-label-danger' }}">
+                                <span
+                                    class="{{ $user->is_active == '1' ? 'badge bg-label-success' : 'badge bg-label-danger' }}">
                                     {{ $user->is_active == '1' ? 'مفعل' : 'غير مفعل' }}
                                 </span>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <a href="javascript:;"
-                                        class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill edit-record"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasAddUser"
-                                        data-user='@json($user)'>
-                                            <i class="ti ti-edit ti-md"></i>
+                                        class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill restore-user" data-id="{{ $user->id }}">
+                                        <i class="ti ti-archive-off ti-md"></i>
                                     </a>
-                                    <a href="javascript:;"
-                                        class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                            <i class="ti ti-dots-vertical ti-md"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end m-0">
-                                            @if(!$user->is_active)
-                                                <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">أرشفة</a>
-                                            @endif
-                                            <a href="javascript:;"
-                                                class="dropdown-item toggle-status"
-                                                data-id="{{ $user->id }}"
-                                                data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
-                                                {{ $user->is_active ? 'تعطيل' : 'تفعيل' }}
-                                            </a>
-                                        </div>
+
                                 </div>
                             </td>
                         </tr>
@@ -150,6 +161,5 @@
         </div>
     </div>
 
-    @include('_partials.users')
 
 @endsection

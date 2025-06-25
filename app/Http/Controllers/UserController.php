@@ -94,6 +94,17 @@ class UserController extends Controller
         }
     }
 
+    public function restore($id)
+    {
+        try {
+            $user = User::onlyTrashed()->findOrFail($id);
+            $user->restore();
+            return response()->json(['status' => 'success', 'message' => 'تم استعادة المستخدم بنجاح']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'حدث خطاء اثناء استعادة المستخدم'], 500);
+        }
+    }
+
     /**
      * Change user state
      */
@@ -107,4 +118,12 @@ class UserController extends Controller
             'message' => $user->is_active ? 'تم تفعيل المستخدم بنجاح'  : 'تم تعطيل المستخدم بنجاح'
         ]);
     }
+
+    public function archive()
+    {
+        $users = User::onlyTrashed()->get();
+        return view('pages.users.archive', compact('users'));
+    }
+
+
 }

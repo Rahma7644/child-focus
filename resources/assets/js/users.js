@@ -208,33 +208,35 @@ $(function () {
         }
         });
     }
-// Status filter dropdown
-dt_user.columns(7)
-.every(function () {
-    var column = this;
-    var select = $(
-        '<select id="FilterTransaction" class="form-select"><option value="">الحالة</option></select>'
-    )
-        .appendTo('.user_status')
-        .on('change', function () {
-            var val = $(this).val();
 
-            if (val) {
-                // Trim any whitespace from the selected value
-                val = val.trim();
-                // Use a regex to match the value with optional whitespace around it
-                // \s* matches zero or more whitespace characters
-                column.search('^\\s*' + val + '\\s*$', true, false).draw();
-            } else {
-                // If no value selected, clear the search
-                column.search('', true, false).draw();
-            }
+    // Status filter dropdown
+    dt_user.columns(7)
+    .every(function () {
+        var column = this;
+        var select = $(
+            '<select id="FilterTransaction" class="form-select"><option value="">الحالة</option></select>'
+        )
+            .appendTo('.user_status')
+            .on('change', function () {
+                var val = $(this).val();
+
+                if (val) {
+                    // Trim any whitespace from the selected value
+                    val = val.trim();
+                    // Use a regex to match the value with optional whitespace around it
+                    // \s* matches zero or more whitespace characters
+                    column.search('^\\s*' + val + '\\s*$', true, false).draw();
+                } else {
+                    // If no value selected, clear the search
+                    column.search('', true, false).draw();
+                }
+            });
+
+        statuses.forEach(function (status) {
+            select.append('<option value="' + status + '">' + status + '</option>');
         });
-
-    statuses.forEach(function (status) {
-        select.append('<option value="' + status + '">' + status + '</option>');
     });
-});
+
     // Delete Record
     $(document).on('click', '.delete-record', function () {
         var user_id = $(this).data('id');
