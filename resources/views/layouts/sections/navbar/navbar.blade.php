@@ -40,19 +40,6 @@ $navbarDetached = ($navbarDetached ?? '');
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-        @if(!isset($menuHorizontal))
-        <!-- Search -->
-        <div class="navbar-nav align-items-center">
-          <div class="nav-item navbar-search-wrapper mb-0">
-            <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-              <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
-              <span class="d-none d-md-inline-block text-muted fw-normal">Search</span>
-            </a>
-          </div>
-        </div>
-        <!-- /Search -->
-        @endif
-
        <ul class="navbar-nav flex-row align-items-center ms-auto">
           {{-- @if(isset($menuHorizontal))
             <!-- Search -->
@@ -429,7 +416,7 @@ $navbarDetached = ($navbarDetached ?? '');
               </li>
               <li>
                 <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
-                  <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">Profile</span>
+                  <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">الملف الشخصي</span>
                 </a>
               </li>
 
@@ -440,7 +427,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 <li>
                   <div class="d-grid px-2 pt-2 pb-1">
                     <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                      <small class="align-middle">Logout</small>
+                      <small class="align-middle">تسجيل الخروج</small>
                       <i class="ti ti-logout ms-2 ti-14px"></i>
                     </a>
                   </div>

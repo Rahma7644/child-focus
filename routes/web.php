@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/{id}/status', [UserController::class, 'toggleStatus'])->name('users.status');
 
+    // reports
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 });
 

@@ -32,6 +32,12 @@
             "slug": "users.archive"
             }
         ]
+        },
+        {
+            "url": "/reports",
+            "name": "البلاغات",
+            "icon": "menu-icon tf-icons ti ti-report",
+            "slug": "reports.index"
         }
     ]
 }
