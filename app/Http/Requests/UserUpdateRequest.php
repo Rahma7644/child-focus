@@ -29,7 +29,7 @@ class UserUpdateRequest extends FormRequest
             'phone' => 'required|digits:9|unique:users,phone,' .$this->id,
             'gender' => 'required|in:0,1',
             'birth_date' => 'required|date|before:today',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed'
         ];
     }
 
