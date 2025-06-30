@@ -52,7 +52,7 @@ $(function () {
     // Manual status filter like user roles
     const statuses = ['مفتوح', 'قيد المعالجة', 'مغلق'];
 
-    this.api().columns(5) // status column index in your Blade
+    this.api().columns(4) // status column index in your Blade
         .every(function () {
             var column = this;
             var select = $('<select id="FilterStatus" class="form-select"><option value="">الحالة</option></select>')

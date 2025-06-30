@@ -20,7 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-
+    Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+    Route::put('/reports/{id}', [ReportController::class, 'update'])->name('reports.update');
 });
 
 

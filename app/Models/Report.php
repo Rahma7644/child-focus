@@ -9,6 +9,7 @@ class Report extends Model
     protected $fillable = [
         'user_id',
         'type',
+        'title',
         'description',
         'status',
     ];
