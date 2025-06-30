@@ -7,28 +7,28 @@
         "slug": "home"
     },
     {
-        "name": "إدارة المستحدمين",
+        "name": "ادارة المستخدمين",
         "icon": "menu-icon tf-icons ti ti-users",
         "slug": "users",
         "submenu": [
             {
             "url": "users/manager",
-            "name": "مسؤولي الروضة",
+            "name": "مسؤولي الروضات",
             "slug": "users.manager"
             },
             {
             "url": "users/teacher",
-            "name": "المعلمون",
+            "name": "المعلمين",
             "slug": "users.teacher"
             },
             {
             "url": "users/parent",
-            "name": "أولياء الأمر",
+            "name": "أولياء الأمور",
             "slug": "users.parent"
             },
             {
             "url": "users/archive",
-            "name": "الارشيف",
+            "name": "الأرشيف",
             "slug": "users.archive"
             }
         ]

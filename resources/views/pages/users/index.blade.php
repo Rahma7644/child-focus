@@ -77,7 +77,7 @@
             </div>
             <div class="card-header border-bottom">
                 <h5 class="card-title mb-0">
-                    {{ $role == 'Manager' ? 'مسؤولي الروضة' : ($role == 'Teacher' ? 'المعلمون' : ($role == 'Parent' ? 'أولياء الأمر' : 'المستخدمين')) }}
+                    {{ $role == 'Manager' ? ' مسؤولي الروضات': ($role == 'Teacher' ? 'المعلمون' : ($role == 'Parent' ? 'أولياء الأمر' : 'المستخدمين')) }}
                 </h5>
         </div>
         <div class="card-header border-bottom">
