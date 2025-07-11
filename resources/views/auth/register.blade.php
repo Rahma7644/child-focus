@@ -10,7 +10,6 @@ $customizerHidden = 'customizer-hide';
     @vite([
     'resources/assets/vendor/libs/bs-stepper/bs-stepper.scss',
     'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-    'resources/assets/vendor/libs/select2/select2.scss',
     'resources/assets/vendor/libs/@form-validation/form-validation.scss',
     'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
     'resources/assets/vendor/libs/pickr/pickr-themes.scss'
@@ -27,7 +26,6 @@ $customizerHidden = 'customizer-hide';
     @vite([
     'resources/assets/vendor/libs/bs-stepper/bs-stepper.js',
     'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
-    'resources/assets/vendor/libs/select2/select2.js',
     'resources/assets/vendor/libs/@form-validation/popular.js',
     'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
     'resources/assets/vendor/libs/@form-validation/auto-focus.js',

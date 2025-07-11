@@ -45,7 +45,7 @@ class UserController extends Controller
 
         $user = $this->userService->createUser($userData);
 
-        return redirect()->route('users.index', strtolower($userData['role']))->with('success', 'تم اضافة المستخدم بنجاح!');
+        return redirect()->route('users.index', strtolower($userData['role']))->with('success', ' تمت اضافة المستخدم بنجاح !');
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends Controller
         try {
             $user = User::onlyTrashed()->findOrFail($id);
             $user->restore();
-            return response()->json(['status' => 'success', 'message' => 'تم استعادة المستخدم بنجاح']);
+            return response()->json(['status' => 'success', 'message' => 'تمت استعادة المستخدم بنجاح']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'حدث خطاء اثناء استعادة المستخدم'], 500);
         }

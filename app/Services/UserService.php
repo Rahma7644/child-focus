@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Manager;
+use App\Models\Parentt;
 use App\Models\Role;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,11 +15,9 @@ class UserService
     /**
      * Create user record.
      */
-    /**
-     * Create user record.
-     */
-    public function createUser(array $userData): User
+    public function createUser(array $userData)
     {
+
         DB::beginTransaction();
         $user = User::create([
             'first_name' => $userData['first_name'],
@@ -31,11 +31,19 @@ class UserService
         ]);
 
         // add role to user with laratrust
-        $user->addRole(Role::whereDisplayName($userData['role'])->first());
+        $roleName = $userData['role'];
+        $user->addRole(Role::whereDisplayName($roleName)->first());
+
+        $relatedModel = match ($roleName) {
+            'Manager' => $this->createManager($user),
+            'Teacher' => $this->createTeacher($user),
+            'Parent' => $this->createParent($user),
+            default => null,
+        };
 
         DB::commit();
 
-        return $user;
+        return $relatedModel;
     }
 
     /**
@@ -44,6 +52,26 @@ class UserService
     private function createManager(User $user): Manager
     {
         return Manager::create([
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Create manager linked to the user.
+     */
+    private function createTeacher(User $user): Teacher
+    {
+        return Teacher::create([
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * Create parent linked to the user.
+     */
+    private function createParent(User $user): Parentt
+    {
+        return Parentt::create([
             'user_id' => $user->id,
         ]);
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kindergarten extends Model
 {
     protected $fillable = [
+        'manager_id',
         'name',
         'address',
         'phone',

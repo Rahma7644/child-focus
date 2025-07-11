@@ -9,6 +9,19 @@ $(function () {
         selectPicker = $('.selectpicker'),
         flatpickrDisabledRange = document.querySelector('#birth_date');
 
+        if (selectPicker.length) {
+            selectPicker.selectpicker()
+        }
+
+        if (select2.length) {
+            select2.each(function () {
+            var $this = $(this);
+            $this.wrap('<div class="position-relative"></div>').select2({
+                placeholder: 'Select value',
+                dropdownParent: $this.parent()
+            });
+        });
+    }
     // Variable declaration for table
     var dt_user_table = $('.datatables-users'),
         offCanvasForm = $('#offcanvasAddUser'),
@@ -173,6 +186,35 @@ $(function () {
             }
             }
         ],
+
+        // Status filter
+        initComplete: function () {
+            const api = this.api();
+            const column = api.column(7);
+
+            const $container = $('.user_status');
+
+            const select = $(`
+                <select id="FilterTransaction" class="selectpicker w-auto"
+                    data-style="btn-transparent"
+                    data-icon-base="ti"
+                    data-tick-icon="ti-check text-white">
+                    <option value="">الحالة</option>
+                </select>
+            `).appendTo($container);
+
+            const statuses = ['مفعل', 'غير مفعل'];
+            statuses.forEach(status => {
+                select.append(`<option value="${status}">${status}</option>`);
+            });
+
+            select.on('change', function () {
+                const val = $(this).val();
+                column.search(val ? '^\\s*' + val.trim() + '\\s*$' : '', true, false).draw();
+            });
+
+            select.selectpicker();
+        },
         // For responsive popup
         responsive: {
             details: {
@@ -208,34 +250,6 @@ $(function () {
         }
         });
     }
-
-    // Status filter dropdown
-    dt_user.columns(7)
-    .every(function () {
-        var column = this;
-        var select = $(
-            '<select id="FilterTransaction" class="form-select"><option value="">الحالة</option></select>'
-        )
-            .appendTo('.user_status')
-            .on('change', function () {
-                var val = $(this).val();
-
-                if (val) {
-                    // Trim any whitespace from the selected value
-                    val = val.trim();
-                    // Use a regex to match the value with optional whitespace around it
-                    // \s* matches zero or more whitespace characters
-                    column.search('^\\s*' + val + '\\s*$', true, false).draw();
-                } else {
-                    // If no value selected, clear the search
-                    column.search('', true, false).draw();
-                }
-            });
-
-        statuses.forEach(function (status) {
-            select.append('<option value="' + status + '">' + status + '</option>');
-        });
-    });
 
     // Delete Record
     $(document).on('click', '.delete-record', function () {

@@ -34,6 +34,12 @@
         ]
         },
         {
+            "url": "/kindergartens",
+            "name": "إدارة الروضات",
+            "icon": "menu-icon tf-icons ti ti-building",
+            "slug": "kindergartens.index"
+        },
+        {
             "url": "/reports",
             "name": "البلاغات",
             "icon": "menu-icon tf-icons ti ti-report",

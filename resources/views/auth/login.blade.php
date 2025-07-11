@@ -97,7 +97,7 @@ $customizerHidden = 'customizer-hide';
 
                         <p class="text-center">
                             <span>ليس لديك حساب؟</span>
-                            <a href="{{url('auth/register-basic')}}">
+                            <a href="{{route('register')}}">
                                 <span>انشاء حساب</span>
                             </a>
                         </p>
