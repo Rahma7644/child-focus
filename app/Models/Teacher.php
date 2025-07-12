@@ -4,17 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Manager extends Model
+class Teacher extends Model
 {
     protected $fillable = ['user_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function kindergarten()
-    {
-        return $this->hasOne(Kindergarten::class);
     }
 }

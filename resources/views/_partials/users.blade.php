@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-sm-12">
                     <label class="form-label" for="gender">الجنس</label>
-                    <select class="form-select" id="gender" name="gender">
+                    <select class="selectpicker w-auto" data-style="btn-transparent" data-icon-base="ti" data-tick-icon="ti-check text-white" id="gender" name="gender">
                         <option value="" disabled selected>اختر</option>
                         <option value="0">ذكر</option>
                         <option value="1">أنثى</option>

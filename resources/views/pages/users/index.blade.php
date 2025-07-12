@@ -13,7 +13,6 @@
         'resources/assets/vendor/libs/animate-css/animate.scss',
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
         'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-        'resources/assets/vendor/libs/select2/select2.scss',
         'resources/assets/vendor/libs/@form-validation/form-validation.scss',
         'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
         'resources/assets/vendor/libs/pickr/pickr-themes.scss'
@@ -34,10 +33,6 @@
     'resources/assets/vendor/libs/cleavejs/cleave-phone.js',
     'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
     'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
-    'resources/assets/vendor/libs/select2/select2.js',
-    'resources/assets/vendor/libs/@form-validation/popular.js',
-    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
-    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
     'resources/assets/vendor/libs/moment/moment.js',
     'resources/assets/vendor/libs/flatpickr/flatpickr.js',
     'resources/assets/vendor/libs/pickr/pickr.js'
@@ -129,7 +124,7 @@
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow"
                                         data-bs-toggle="dropdown">
                                             <i class="ti ti-dots-vertical ti-md"></i>
-                                        </a>
+                                    </a>
                                         <div class="dropdown-menu dropdown-menu-end m-0">
                                             @if(!$user->is_active)
                                                 <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">أرشفة</a>

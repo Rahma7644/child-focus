@@ -36,9 +36,10 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Report $report)
+    public function show($id)
     {
-        //
+        $report = Report::findOrFail($id);
+        return view('pages.reports.show', compact('report'));
     }
 
     /**
@@ -52,9 +53,17 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Report $report)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:open,active,closed',
+        ]);
+
+        $report = Report::findOrFail($id);
+        $report->status = $request->status;
+        $report->save();
+
+        return redirect()->route('reports.index')->with('success', 'تم تحديث حالة البلاغ بنجاح');
     }
 
     /**

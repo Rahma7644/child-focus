@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KindergartenController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+    Route::put('/reports/{id}', [ReportController::class, 'update'])->name('reports.update');
 
+    // kindergartens
+    Route::get('/kindergartens', [KindergartenController::class, 'index'])->name('kindergartens.index');
+    Route::post('/kindergartens', [KindergartenController::class, 'store'])->name('kindergartens.store');
+    Route::put('/kindergartens/{id}', [KindergartenController::class, 'update'])->name('kindergartens.update');
 });
 
 
