@@ -150,7 +150,7 @@
                                                                                                 <div class="d-flex align-items-center">
                                                                                                     <a href="javascript:;"
                                                                                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill edit-record"
-                                                                                                        data-bs-toggle="modal" data-bs-target="#kgModal" data-user='@json($kg)'>
+                                                                                                        data-bs-toggle="modal" data-bs-target="#kgModal" data-kg='@json($kg)'>
                                                                                                         <i class="ti ti-edit ti-md"></i>
                                                                                                     </a>
                                                                                                     <a href="javascript:;" class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -160,8 +160,8 @@
                                                                                                         <a href="javascript:;"
                                                                                                             class="dropdown-item toggle-status"
                                                                                                             data-id="{{ $kg->manager->user->id }}"
-                                                                                                            data-status="{{ $kg->manager->user->id ? 'active' : 'inactive' }}">
-                                                                                                            {{ $kg->manager->user->id ? 'تعطيل' : 'تفعيل' }}
+                                                                                                            data-status="{{ $kg->manager->user->is_active ? 'active' : 'inactive' }}">
+                                                                                                            {{ $kg->manager->user->is_active ? 'تعطيل' : 'تفعيل' }}
                                                                                                         </a>
                                                                                                     </div>
                                                                                                 </div>

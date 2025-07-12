@@ -28,7 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/kindergartens', [KindergartenController::class, 'index'])->name('kindergartens.index');
     Route::post('/kindergartens', [KindergartenController::class, 'store'])->name('kindergartens.store');
     Route::put('/kindergartens/{id}', [KindergartenController::class, 'update'])->name('kindergartens.update');
-    Route::post('/kindergartens/{id}/status', [KindergartenController::class, 'toggleStatus'])->name('kindergartens.status');
 });
 
 

@@ -167,6 +167,7 @@ $(function () {
         $('.btn[type=submit]').text('تحديث');
     });
 
+    // reset form
     $('#kgModal').on('hidden.bs.modal', function () {
     $('#kgForm')[0].reset();
     $('#kgForm input[name="_method"]').remove();

@@ -115,7 +115,7 @@ class UserController extends Controller
         $user->save();
 
         return response()->json([
-            'message' => $user->is_active ? 'تم تفعيل المستخدم بنجاح'  : 'تم تعطيل المستخدم بنجاح'
+            'message' => $user->is_active ? 'تم التفعيل بنجاح'  : 'تم التعطيل بنجاح'
         ]);
     }
 
