@@ -124,7 +124,7 @@
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow"
                                         data-bs-toggle="dropdown">
                                             <i class="ti ti-dots-vertical ti-md"></i>
-                                        </a>
+                                    </a>
                                         <div class="dropdown-menu dropdown-menu-end m-0">
                                             @if(!$user->is_active)
                                                 <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">أرشفة</a>

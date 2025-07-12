@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\kindergartenRequest;
 use App\Models\Kindergarten;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class KindergartenController extends Controller
 {
@@ -101,10 +103,58 @@ class KindergartenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kindergarten $kindergarten)
+    public function update(KindergartenRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+
+        $kindergarten = Kindergarten::findOrFail($id);
+
+        $kgData = [
+            'name' => $data['kgName'],
+            'address' => $data['kgLocation'],
+            'phone' => $data['kgPhone'],
+        ];
+        if ($request->hasFile('kgLogo')) {
+            // Delete old logo from storage
+            if ($kindergarten->logo && Storage::disk('public')->exists($kindergarten->logo)) {
+                Storage::disk('public')->delete($kindergarten->logo);
+            }
+
+            // Upload new logo
+            $logoPath = $request->file('kgLogo')->store('kg_logos', 'public');
+            $kgData['logo'] = $logoPath;
+        }
+
+
+        $managerId = $data['manager_id'] ?? null;
+
+        DB::transaction(function () use (&$managerId, $data, $kgData, $kindergarten) {
+            if (!$managerId) {
+                // Create a new manager
+                $userData = [
+                    'first_name' => $data['first_name'],
+                    'second_name' => $data['second_name'],
+                    'last_name' => $data['last_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'gender' => $data['gender'],
+                    'birth_date' => $data['birth_date'],
+                    'password' => Hash::make($data['password']),
+                    'role' => 'Manager',
+                ];
+
+                $manager = $this->userService->createUser($userData);
+                $managerId = $manager->id;
+            }
+
+            // Update kindergarten data
+            $kgData['manager_id'] = $managerId;
+            $kindergarten->update($kgData);
+        });
+
+        return redirect()->route('kindergartens.index')->with('success', 'تم تحديث بيانات الروضة بنجاح!');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -113,4 +163,5 @@ class KindergartenController extends Controller
     {
         //
     }
+
 }

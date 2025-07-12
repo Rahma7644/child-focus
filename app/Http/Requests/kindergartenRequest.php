@@ -29,7 +29,7 @@ class kindergartenRequest extends FormRequest
             'kgLogo' => 'nullable|image|max:2048',
 
             // If selecting existing manager
-            'manager_id' => 'nullable|exists:users,id',
+            'manager_id' => 'nullable|exists:managers,id',
 
             // If creating new manager
             'first_name' => 'nullable|string',

@@ -13,6 +13,8 @@ $(function () {
     userSelect = $('#manager_id'),
     managerLabel = $('#managerLabel');
 
+    let previousManagerId = null;
+
     if (selectPicker.length) {
         selectPicker.selectpicker();
     }
@@ -48,6 +50,10 @@ $(function () {
 
             newUserFields.find('input, select').val('');
             managerLabel.text('مدير الروضة').removeClass('fs-6');
+
+            if (previousManagerId) {
+                userSelect.val(previousManagerId).trigger('change');
+            }
 
             toggleBtn.removeClass('bg-label-danger').addClass('bg-label-primary mt-6');
             icon.removeClass('ti-x').addClass('ti-user-plus ');
@@ -127,101 +133,105 @@ $(function () {
             select.selectpicker();
         }
 
-
         });
     }
 
+    // edit record
+    $(document).on('click', '.edit-record', function () {
+        var kgData = $(this).data('kg');
+        $('#kgModal').modal('show');
 
-    // // edit record
-    // $(document).on('click', '.edit-record', function () {
-    //     var userData = $(this).data('user');
-    //     $('#userForm').data('mode', 'edit');
-    //     $('#offcanvasAddUser').offcanvas('show');
+        previousManagerId = kgData.manager_id;
 
-    //     $('#first_name').val(userData.first_name);
-    //     $('#second_name').val(userData.second_name);
-    //     $('#last_name').val(userData.last_name);
-    //     $('#email').val(userData.email);
-    //     $('#phone').val(userData.phone);
-    //     $('#gender').val(userData.gender);
-    //     $('#birth_date').val(userData.birth_date);
+        $('#kgName').val(kgData.name);
+        $('#kgLocation').val(kgData.address);
+        $('#kgPhone').val(kgData.phone);
+        $('#manager_id').val(kgData.manager_id).trigger('change');
 
-    //     // Update form action to PUT
-    //     $('#userForm').attr('action', `${baseUrl}users/${userData.id}`);
-    //     $('#userForm').append('<input type="hidden" name="_method" value="PUT">');
+        if (kgData.logo) {
+            $('#logoPreview').attr('src', `/storage/${kgData.logo}`).show();
+            $('#logoNote').hide();
 
-    //     // Change title and button text
-    //     $('#offcanvasAddUserLabel').text('تعديل المستخدم');
-    //     $('.data-submit').text('تحديث');
-    // });
+        } else {
+            $('#logoPreview').hide();
+            $('#logoNote').show();
+        }
 
-    // offCanvasForm.on('hidden.bs.offcanvas', function () {
-    //     fv.resetForm(true);
+        $('#newUserFields').hide();
 
-    //     // Reset form to POST
-    //     $('#userForm').attr('action', `${baseUrl}users`);
-    //     $('#userForm input[name="_method"]').remove();
+        $('#kgForm').attr('action', `${baseUrl}kindergartens/${kgData.id}`);
+        if (!$('#kgForm input[name="_method"]').length) {
+            $('#kgForm').append('<input type="hidden" name="_method" value="PUT">');
+        }
 
-    //     // reset gender value
-    //     $('#gender').val('');
-    //     // Reset title and button
-    //     $('#offcanvasAddUserLabel').text('اضافة مستخدم');
-    //     $('.data-submit').text('اضافة');
+        $('.btn[type=submit]').text('تحديث');
+    });
 
-    //     $('#userForm').removeData('mode');
-    // });
+    $('#kgModal').on('hidden.bs.modal', function () {
+    $('#kgForm')[0].reset();
+    $('#kgForm input[name="_method"]').remove();
+    $('#manager_id').val('').trigger('change');
+    $('#gender').val('').trigger('change');
+    $('#logoPreview').hide();
+    $('#logoNote').show();
+    $('#newUserFields').hide();
+    $('.btn[type=submit]').text('اضافة');
+    fvKg.resetForm(true);
+});
 
-    // // toggle status
-    // $(document).on('click', '.toggle-status', function () {
-    //     let $btn = $(this);
-    //     let userId = $btn.data('id');
-    //     let currentStatus = $btn.data('status');
-    //     let actionText = currentStatus === 'active' ? 'تعطيل' : 'تفعيل';
 
-    //     Swal.fire({
-    //         text: `هل أنت متأكد أنك تريد ${actionText} هذا المستخدم؟`,
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonText: 'نعم',
-    //         cancelButtonText: 'إلغاء',
-    //         customClass: {
-    //             confirmButton: 'btn btn-warning me-3',
-    //             cancelButton: 'btn btn-label-secondary'
-    //         },
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             $.ajax({
-    //                 url: `/users/${userId}/status`,
-    //                 type: 'POST',
-    //                 data: {
-    //                     _token: $('meta[name="csrf-token"]').attr('content')
-    //                 },
-    //                 success: function (response) {
-    //                     Swal.fire({
-    //                         icon: 'success',
-    //                         text: response.message,
-    //                         customClass: {
-    //                             confirmButton: 'btn btn-success'
-    //                         }
-    //                     }).then(result => {
-    //                         if (result.isConfirmed) {
-    //                             location.reload();
-    //                         }
-    //                     });
-    //                 },
-    //                 error: function () {
-    //                     Swal.fire({
-    //                         icon: 'error',
-    //                         text: 'فشل في تغيير حالة المستخدم',
-    //                         customClass: {
-    //                             confirmButton: 'btn btn-danger'
-    //                         }
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // });
+
+    // toggle status
+    $(document).on('click', '.toggle-status', function () {
+        let $btn = $(this);
+        let userId = $btn.data('id');
+        let currentStatus = $btn.data('status');
+        let actionText = currentStatus === 'active' ? 'تعطيل' : 'تفعيل';
+
+        Swal.fire({
+            text: `هل أنت متأكد أنك تريد ${actionText} الروضة؟`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم',
+            cancelButtonText: 'إلغاء',
+            customClass: {
+                confirmButton: 'btn btn-warning me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/users/${userId}/status`,
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            customClass: {
+                                confirmButton: 'btn btn-success'
+                            }
+                        }).then(result => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'فشل في تغيير حالة الروضة',
+                            customClass: {
+                                confirmButton: 'btn btn-danger'
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     // ? setTimeout used for multilingual table initialization
     setTimeout(() => {
