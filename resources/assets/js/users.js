@@ -409,9 +409,9 @@ $(function () {
                     message: 'الاسم الاول مطلوب'
                     },
                     stringLength: {
-                    min: 4,
+                    min: 2,
                     max: 10,
-                    message: 'الاسم الاول يجب ان يكون بين 4 و 10 أحرف'
+                    message: 'الاسم الاول يجب ان يكون بين 2 و 10 أحرف'
                     },
                     regexp: {
                         regexp: /^[\u0600-\u06FFa-zA-Z\s]+$/,
@@ -425,9 +425,9 @@ $(function () {
                         message: 'الاسم الثاني مطلوب'
                         },
                         stringLength: {
-                        min: 4,
+                        min: 2,
                         max: 10,
-                        message: 'الاسم الثاني يجب ان يكون بين 4 و 10 أحرف'
+                        message: 'الاسم الثاني يجب ان يكون بين 2 و 10 أحرف'
                         },
                         regexp: {
                             regexp: /^[\u0600-\u06FFa-zA-Z\s]+$/,
