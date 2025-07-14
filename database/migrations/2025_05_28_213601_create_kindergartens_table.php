@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('phone');
+            $table->boolean('is_public');
             $table->timestamps();
 
             $table->foreign('manager_id')->references('id')->on('managers')->onDelete('cascade');

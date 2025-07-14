@@ -77,6 +77,7 @@
             <h5 class="card-title mb-0">الفلترة</h5>
             <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
                 <div class="col-md-4 user_status"></div>
+                <div class="col-md-4 kg_type"></div>
             </div>
         </div>
         <div class="card-datatable table-responsive">
@@ -88,6 +89,7 @@
                         <th>اسم الروضة</th>
                         <th>رقم الهاتف</th>
                         <th>العنوان</th>
+                        <th>نوع الروضة</th>
                         <th>مدير الروضة</th>
                         <th>الحالة</th>
                         <th>الاجراءات</th>
@@ -132,7 +134,12 @@
                                                                                             </td>
                                                                                             <td>0{{ $kg->phone }}</td>
                                                                                             <td>
-                                                                                                <a href="{{$kg->address}}"> {{$kg->address }}</a>
+                                                                                                <a href="{{ $kg->address }}" target="_blank"> {{$kg->address }}</a>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span class="{{ $kg->is_public == '0' ? 'badge bg-label-info' : 'badge bg-label-primary' }}">
+                                                                                                    {{ $kg->is_public == '0' ? 'عامة' : 'خاصة' }}
+                                                                                                </span>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <div class="d-flex flex-column">

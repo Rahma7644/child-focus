@@ -49,7 +49,9 @@ class KindergartenController extends Controller
             'name' => $data['kgName'],
             'address' => $data['kgLocation'],
             'phone' => $data['kgPhone'],
+            'is_public' => $data['kgType'],
         ];
+
         // Upload logo if available
         if ($request->hasFile('kgLogo')) {
             $logoPath = $request->file('kgLogo')->store('kg_logos', 'public');
@@ -113,6 +115,7 @@ class KindergartenController extends Controller
             'name' => $data['kgName'],
             'address' => $data['kgLocation'],
             'phone' => $data['kgPhone'],
+            'is_public' => $data['kgType']
         ];
         if ($request->hasFile('kgLogo')) {
             // Delete old logo from storage

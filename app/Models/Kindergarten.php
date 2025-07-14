@@ -12,6 +12,7 @@ class Kindergarten extends Model
         'address',
         'phone',
         'logo',
+        'is_public',
     ];
 
     public function manager()
