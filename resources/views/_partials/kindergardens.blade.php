@@ -34,23 +34,16 @@
                         </div>
                         <div class="col-sm-12">
                             <label class="form-label" for="kgLogo">شعار الروضة</label>
-
                             <div class="position-relative">
                                 <input type="file" name="kgLogo" id="kgLogo" class="form-control pe-5" accept="image/*" />
                                 <img id="logoPreview" src="" alt="شعار الروضة"
                                     class="position-absolute end-0 top-50 translate-middle-y me-2 rounded"
                                     style="width: 32px; height: 32px; object-fit: cover; display: none;" />
                             </div>
-
                             <small id="logoNote" class="text-muted mt-1">قم برفع شعار الروضة إن وجد.</small>
                         </div>
-
                     </div>
-
                     <hr class="my-4" />
-@php
-$managers = App\Models\Manager::all();
-                                        @endphp
                     <!-- Manager Section -->
                     <h5 class="my-3">مدير الروضة</h5>
                     <div class="row mb-3 mt-0 g-3">

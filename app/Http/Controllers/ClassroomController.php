@@ -30,7 +30,16 @@ class ClassroomController extends Controller
      */
     public function store(ClassroomRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        // Upload image if available
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('classrooms_images', 'public');
+        }
+
+        classroom::create($data);
+
+        return redirect()->route('classrooms.index')->with('success','تم اضافة الفصل الدراسي بنجاح !');
     }
 
     /**

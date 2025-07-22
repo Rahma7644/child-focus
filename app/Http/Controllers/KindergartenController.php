@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\kindergartenRequest;
 use App\Models\Kindergarten;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;

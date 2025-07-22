@@ -3,48 +3,42 @@
     $(function () {
     const selectPicker = $('.selectpicker'),
     select2 = $('.select2'),
-    flatpickrDisabledRange = document.querySelector('#birth_date'),
-    toggleBtn = $('#toggleAddUserBtn'),
-    newUserFields = $('#newUserFields'),
-    userSelect = $('#teacher_id'),
-    teacherLabel = $('#teacherLabel');
-$(function () {
-    const $kgSelect = $('#kindergarten_id');
-    const $levelSelect = $('#level');
+    flatpickrDisabledRange = document.querySelector('#birth_date');
 
-    const levels = {
-        public: [
-            { value: 'grade1', text: 'أساسي 1' },
-            { value: 'grade2', text: 'أساسي 2' },
-            { value: 'grade3', text: 'أساسي 3' }
-        ],
-        private: [
-            { value: 'kg1', text: 'تمهيدي 1' },
-            { value: 'kg2', text: 'تمهيدي 2' },
-            { value: 'kg3', text: 'تمهيدي 3' }
-        ]
-    };
+    $(function () {
+        const $kgSelect = $('#kindergarten_id');
+        const $levelSelect = $('#level');
 
-    $kgSelect.on('change', function () {
-        const selectedOption = $(this).find('option:selected');
-        const isPublic = selectedOption.data('public') === 1 || selectedOption.data('public') === '1';
-        const levelType = isPublic ? 'public' : 'private';
-        const options = levels[levelType];
+        const levels = {
+            public: [
+                { value: 'grade1', text: 'أساسي 1' },
+                { value: 'grade2', text: 'أساسي 2' },
+                { value: 'grade3', text: 'أساسي 3' }
+            ],
+            private: [
+                { value: 'kg1', text: 'تمهيدي 1' },
+                { value: 'kg2', text: 'تمهيدي 2' },
+                { value: 'kg3', text: 'تمهيدي 3' }
+            ]
+        };
 
-        // Clear and repopulate
-        $levelSelect.prop('disabled', false);
-        $levelSelect.empty().append('<option value="" disabled selected>اختر</option>');
+        $kgSelect.on('change', function () {
+            const selectedOption = $(this).find('option:selected');
+            const isPublic = selectedOption.data('public') === 1 || selectedOption.data('public') === '1';
+            const levelType = isPublic ? 'public' : 'private';
+            const options = levels[levelType];
 
-        options.forEach(opt => {
-            $levelSelect.append(new Option(opt.text, opt.value));
+            // Clear and repopulate
+            $levelSelect.prop('disabled', false);
+            $levelSelect.empty().append('<option value="" disabled selected>اختر</option>');
+
+            options.forEach(opt => {
+                $levelSelect.append(new Option(opt.text, opt.value));
+            });
+
+            $levelSelect.trigger('change.select2');
         });
-
-        $levelSelect.trigger('change.select2');
     });
-});
-
-
-    let previousTeacherId = null;
 
     if (selectPicker.length) {
         selectPicker.selectpicker();
@@ -60,45 +54,9 @@ $(function () {
         });
     }
 
-    toggleBtn.on('click', function () {
-        const icon = $(this).find('i');
-        const creatingNewTeacher = newUserFields.is(':hidden');
-
-        if (creatingNewTeacher) {
-            newUserFields.slideDown();
-            userSelect.val('').trigger('change');
-
-            userSelect.next('.select2-container').hide();
-            fvClass.updateFieldStatus('teacher_id', 'NotValidated');
-
-            teacherLabel.text('اضافة معلم جديد').addClass('fs-6');
-
-            toggleBtn.removeClass('bg-label-primary mt-6').addClass('bg-label-danger');
-            icon.removeClass('ti-user-plus').addClass('ti-x');
-        } else {
-            newUserFields.slideUp();
-            userSelect.next('.select2-container').show();
-
-            newUserFields.find('input, select').val('');
-            teacherLabel.text('معلم الفصل الدراسي').removeClass('fs-6');
-
-            if (previousTeacherId) {
-                userSelect.val(previousTeacherId).trigger('change');
-            }
-
-            toggleBtn.removeClass('bg-label-danger').addClass('bg-label-primary mt-6');
-            icon.removeClass('ti-x').addClass('ti-user-plus ');
-        }
-    });
-
-
     // reset form
     $('#classModal').on('hidden.bs.modal', function () {
     $('#classForm')[0].reset();
-    $('#teacher_id').val('').trigger('change');
-    $('#gender').val('').trigger('change');
-    $('#newUserFields').hide();
-    $('.btn[type=submit]').text('اضافة');
     fvClass.resetForm(true);
 });
 
@@ -238,7 +196,7 @@ const fvClass = FormValidation.formValidation(classForm, {
         description: {
             validators: {
                 notEmpty: {
-                    message: 'سعة الفصل الدراسي مطلوبة'
+                    message: 'وصف الفصل الدراسي مطلوبة'
                 },
             }
         },
@@ -251,127 +209,7 @@ const fvClass = FormValidation.formValidation(classForm, {
                 }
             }
         },
-        teacher_id: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار معلم الفصل الدراسي',
-                    callback: function(input) {
-                    const isSelect2Hidden = $('#teacher_id').next('.select2-container').css('display') === 'none';
-                    const hasValue = input.value !== '';
-                    return isSelect2Hidden || hasValue;
-                    }
-                }
-                }
-            },
 
-
-        // Teacher fields (conditionally required)
-        first_name: {
-            validators: {
-                callback: {
-                    message: 'الاسم الاول مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        second_name: {
-            validators: {
-                callback: {
-                    message: 'الاسم الثاني مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        last_name: {
-            validators: {
-                callback: {
-                    message: 'اللقب مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        email: {
-            validators: {
-                callback: {
-                    message: 'البريد الالكتروني مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                },
-                emailAddress: {
-                    message: 'البريد الالكتروني غير صالح'
-                }
-            }
-        },
-        phone: {
-            validators: {
-                callback: {
-                    message: 'رقم الهاتف مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        gender: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار الجنس',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim() !== '' : true;
-                    }
-                }
-            }
-        },
-        birth_date: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار تاريخ الميلاد',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                },
-                date: {
-                    format: 'YYYY-MM-DD',
-                    message: 'صيغة التاريخ غير صحيحة. يجب أن تكون مثل 2025-01-01'
-                }
-            }
-        },
-        password: {
-            validators: {
-                callback: {
-                    message: 'كلمة المرور مطلوبة',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        password_confirmation: {
-            validators: {
-                callback: {
-                    message: 'تأكيد كلمة المرور مطلوب',
-                    callback: function (input) {
-                        if (!$('#newUserFields').is(':visible')) return true;
-
-                        const passwordValue = classForm.querySelector('[name="password"]').value;
-                        return input.value.trim().length > 0 && input.value === passwordValue;
-                    }
-                },
-                identical: {
-                    compare: function () {
-                        return classForm.querySelector('[name="password"]').value;
-                    },
-                    message: 'كلمات المرور غير متطابقة'
-                }
-            }
-        },
     },
     plugins: {
         trigger: new FormValidation.plugins.Trigger(),
