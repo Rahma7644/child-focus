@@ -40,6 +40,12 @@
             "slug": "kindergartens.index"
         },
         {
+            "url": "/classrooms",
+            "name": "الفصول الدراسية",
+            "icon": "menu-icon tf-icons ti ti-book",
+            "slug": "classrooms.index"
+        },
+        {
             "url": "/reports",
             "name": "البلاغات",
             "icon": "menu-icon tf-icons ti ti-report",

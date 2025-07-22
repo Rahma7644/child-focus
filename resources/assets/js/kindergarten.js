@@ -1,7 +1,3 @@
-/**
- * Page User List
- */
-
 'use strict';
 
 $(function () {
@@ -61,8 +57,7 @@ $(function () {
     });
 
     // Variable declaration for table
-    var dt_user_table = $('.datatables-users'),
-        offCanvasForm = $('#offcanvasAddUser');
+    var dt_user_table = $('.datatables-users')
 
     // Users datatable
     if (dt_user_table.length) {
@@ -131,7 +126,7 @@ $(function () {
             });
 
             select.selectpicker();
-        
+
             //  Type Filter
             const typeColumn = api.column(5); // update the index if needed
             const $typeContainer = $('.kg_type');
