@@ -45,9 +45,11 @@ class ClassroomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(classroom $classroom)
+    public function show($id)
     {
-        //
+        $classroom = Classroom::findOrFail($id);
+
+        return view('pages.classrooms.show', compact('classroom'));
     }
 
     /**

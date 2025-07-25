@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // classrooms
     Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
     Route::post('/classrooms', [ClassroomController::class,'store'])->name('classrooms.store');
+    Route::get('/classrooms/{id}', [ClassroomController::class,'show'])->name('classrooms.show');
 });
 
 

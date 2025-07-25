@@ -107,17 +107,18 @@
                     @forelse ( $classrooms as $classroom )
                         <div class="col-sm-6 col-lg-4 d-flex classroom-card" data-level="{{ $classroom->level }}">
                             <div class="card p-2 h-100 shadow-none border">
-                                <div class="rounded-2 text-center mb-4">
-                                    <a href="#">
-                                        <img class="img-fluid" src="{{ asset('storage/' . $classroom->image) }}"
-                                        alt="صورة الفصل"
-                                        class="object-contain rounded"
-                                        style="width: 100%; height: 200px;"  />
+                                <div class="rounded-2 text-center mb-4 position-relative">
+                                    <span class="badge bg-label-info position-absolute top-0 end-0 m-1 px-3">{{ $classroom->level }}</span>
+                                    <a href="{{ route('classrooms.show', $classroom->id) }}">
+                                        <img class="img-fluid object-contain rounded"
+                                            src="{{ asset('storage/' . $classroom->image) }}"
+                                            alt="صورة الفصل"
+                                            style="width: 100%; height: 200px; object-fit: cover;" />
                                     </a>
                                 </div>
                                 <div class="card-body p-4 pt-2">
-                                    <a href="{{url('app/academy/course-details')}}" class="h5">{{$classroom->name}}</a>
-                                    <p class="text-truncate">{{$classroom->description}}</p>
+                                    <a href="{{ route('classrooms.show', $classroom->id) }}" class="h5">{{$classroom->name}}</a>
+                                    <p class="text-truncate mt-1">{{$classroom->description}}</p>
                                     <p class="d-flex align-items-center my-2">
                                         <i class="ti ti-users me-1"></i>
                                         <span class="fw-semibold">{{$classroom->capacity}}/0 طالب</span>
@@ -126,7 +127,7 @@
                                         <div class="progress-bar w-75" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <div class="d-flex flex-column flex-md-row gap-4 text-nowrap flex-wrap flex-md-nowrap  flex-lg-wrap flex-xxl-nowrap">
-                                        <a class="w-100 btn btn-label-primary d-flex align-items-center" href="{{url('app/academy/course-details')}}">
+                                        <a class="w-100 btn btn-label-primary d-flex align-items-center" href="{{ route('classrooms.show', $classroom->id) }}">
                                         <span class="me-2">التفاصيل</span><i class="ti ti-chevron-right ti-xs scaleX-n1-rtl"></i>
                                         </a>
                                     </div>
