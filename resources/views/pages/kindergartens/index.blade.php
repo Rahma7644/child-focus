@@ -1,42 +1,44 @@
 @extends('layouts/layoutMaster')
+@php
+    $configData = Helper::appClasses();
+    $managers = App\Models\Manager::all();
+@endphp
 
 @section('title', 'إدارة الروضات')
-
 
 <!-- Vendor Styles -->
 @section('vendor-style')
     @vite([
-    'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
-    'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
-    'resources/assets/vendor/libs/animate-css/animate.scss',
-    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-    'resources/assets/vendor/libs/select2/select2.scss',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
-    'resources/assets/vendor/libs/@form-validation/form-validation.scss',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
-    'resources/assets/vendor/libs/pickr/pickr-themes.scss'
-
-])
+        'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
+        'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
+        'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
+        'resources/assets/vendor/libs/animate-css/animate.scss',
+        'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
+        'resources/assets/vendor/libs/select2/select2.scss',
+        'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
+        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
+        'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
+        'resources/assets/vendor/libs/pickr/pickr-themes.scss'
+    ])
 @endsection
 
 <!-- Vendor Scripts -->
 @section('vendor-script')
         @vite([
-    'resources/assets/vendor/libs/moment/moment.js',
-    'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
-    'resources/assets/vendor/libs/cleavejs/cleave.js',
-    'resources/assets/vendor/libs/cleavejs/cleave-phone.js',
-    'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
-    'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
-    'resources/assets/vendor/libs/select2/select2.js',
-    'resources/assets/vendor/libs/@form-validation/popular.js',
-    'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
-    'resources/assets/vendor/libs/@form-validation/auto-focus.js',
-    'resources/assets/vendor/libs/moment/moment.js',
-    'resources/assets/vendor/libs/flatpickr/flatpickr.js',
-    'resources/assets/vendor/libs/pickr/pickr.js'
-])
+            'resources/assets/vendor/libs/moment/moment.js',
+            'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
+            'resources/assets/vendor/libs/cleavejs/cleave.js',
+            'resources/assets/vendor/libs/cleavejs/cleave-phone.js',
+            'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
+            'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.js',
+            'resources/assets/vendor/libs/select2/select2.js',
+            'resources/assets/vendor/libs/@form-validation/popular.js',
+            'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+            'resources/assets/vendor/libs/@form-validation/auto-focus.js',
+            'resources/assets/vendor/libs/moment/moment.js',
+            'resources/assets/vendor/libs/flatpickr/flatpickr.js',
+            'resources/assets/vendor/libs/pickr/pickr.js'
+        ])
 @endsection
 
 <!-- Page Scripts -->
@@ -77,6 +79,7 @@
             <h5 class="card-title mb-0">الفلترة</h5>
             <div class="d-flex justify-content-between align-items-center row pt-4 gap-4 gap-md-0">
                 <div class="col-md-4 user_status"></div>
+                <div class="col-md-4 kg_type"></div>
             </div>
         </div>
         <div class="card-datatable table-responsive">
@@ -88,6 +91,7 @@
                         <th>اسم الروضة</th>
                         <th>رقم الهاتف</th>
                         <th>العنوان</th>
+                        <th>نوع الروضة</th>
                         <th>مدير الروضة</th>
                         <th>الحالة</th>
                         <th>الاجراءات</th>
@@ -132,7 +136,12 @@
                                                                                             </td>
                                                                                             <td>0{{ $kg->phone }}</td>
                                                                                             <td>
-                                                                                                <a href="{{$kg->address}}"> {{$kg->address }}</a>
+                                                                                                <a href="{{ $kg->address }}" target="_blank"> {{$kg->address }}</a>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span class="{{ $kg->is_public == '0' ? 'badge bg-label-info' : 'badge bg-label-primary' }}">
+                                                                                                    {{ $kg->is_public == '0' ? 'عامة' : 'خاصة' }}
+                                                                                                </span>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <div class="d-flex flex-column">

@@ -1,7 +1,3 @@
-/**
- * Page User List
- */
-
 'use strict';
 
 $(function () {
@@ -61,8 +57,7 @@ $(function () {
     });
 
     // Variable declaration for table
-    var dt_user_table = $('.datatables-users'),
-        offCanvasForm = $('#offcanvasAddUser');
+    var dt_user_table = $('.datatables-users')
 
     // Users datatable
     if (dt_user_table.length) {
@@ -107,7 +102,7 @@ $(function () {
         // status filter
         initComplete: function () {
             const api = this.api();
-            const column = api.column(6);
+            const column = api.column(7);
 
             const $container = $('.user_status');
 
@@ -131,8 +126,33 @@ $(function () {
             });
 
             select.selectpicker();
-        }
 
+            //  Type Filter
+            const typeColumn = api.column(5); // update the index if needed
+            const $typeContainer = $('.kg_type');
+
+            const typeSelect = $(`
+                <select id="FilterKgType" class="selectpicker w-auto"
+                    data-style="btn-transparent"
+                    data-icon-base="ti"
+                    data-tick-icon="ti-check text-white">
+                    <option value="">نوع الروضة</option>
+                </select>
+            `).appendTo($typeContainer);
+
+            const types = ['عامة', 'خاصة'];
+            types.forEach(type => {
+                typeSelect.append(`<option value="${type}">${type}</option>`);
+            });
+
+            typeSelect.on('change', function () {
+                const val = $(this).val();
+                typeColumn.search(val ? '^\\s*' + val.trim() + '\\s*$' : '', true, false).draw();
+            });
+
+            typeSelect.selectpicker();
+
+        },
         });
     }
 
@@ -146,6 +166,8 @@ $(function () {
         $('#kgName').val(kgData.name);
         $('#kgLocation').val(kgData.address);
         $('#kgPhone').val(kgData.phone);
+        $('#kgType').val(kgData.is_public.toString()).trigger('change');
+
         $('#manager_id').val(kgData.manager_id).trigger('change');
 
         if (kgData.logo) {
@@ -177,7 +199,7 @@ $(function () {
     $('#logoNote').show();
     $('#newUserFields').hide();
     $('.btn[type=submit]').text('اضافة');
-    fvKg.resetForm(true);
+    fvKg.resetForm(true);
 });
 
 
@@ -266,6 +288,16 @@ const fvKg = FormValidation.formValidation(kgForm, {
                 regexp: {
                     regexp: /^[0-9]{9}$/,
                     message: 'رقم الهاتف يجب أن يتكون من 9 أرقام'
+                }
+            }
+        },
+        kgType: {
+            validators: {
+                callback: {
+                    message: 'الرجاء اختيار نوع الروضة',
+                    callback: function(input) {
+                        return input.value !== '';
+                    }
                 }
             }
         },

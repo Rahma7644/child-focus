@@ -27,6 +27,7 @@ class kindergartenRequest extends FormRequest
             'kgLocation' => 'required|string|max:255',
             'kgPhone' => 'required|digits:9',
             'kgLogo' => 'nullable|image|max:2048',
+            'kgType' => 'nullable|in:0,1',
 
             // If selecting existing manager
             'manager_id' => 'nullable|exists:managers,id',

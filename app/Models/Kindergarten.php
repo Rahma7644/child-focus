@@ -12,10 +12,16 @@ class Kindergarten extends Model
         'address',
         'phone',
         'logo',
+        'is_public',
     ];
 
     public function manager()
     {
         return $this->belongsTo(Manager::class);
+    }
+
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class);
     }
 }

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\kindergartenRequest;
 use App\Models\Kindergarten;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +47,9 @@ class KindergartenController extends Controller
             'name' => $data['kgName'],
             'address' => $data['kgLocation'],
             'phone' => $data['kgPhone'],
+            'is_public' => $data['kgType'],
         ];
+
         // Upload logo if available
         if ($request->hasFile('kgLogo')) {
             $logoPath = $request->file('kgLogo')->store('kg_logos', 'public');
@@ -113,6 +113,7 @@ class KindergartenController extends Controller
             'name' => $data['kgName'],
             'address' => $data['kgLocation'],
             'phone' => $data['kgPhone'],
+            'is_public' => $data['kgType']
         ];
         if ($request->hasFile('kgLogo')) {
             // Delete old logo from storage

@@ -1,4 +1,3 @@
-<!-- Edit User Modal -->
 <div class="modal fade" id="kgModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-simple modal-kg">
         <div class="modal-content">
@@ -26,24 +25,25 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
+                            <label class="form-label" for="kgType">نوع الروضة</label>
+                            <select id="kgType" name="kgType" class="select form-select">
+                                <option value="" disabled selected>اختر</option>
+                                <option value="0">عامة</option>
+                                <option value="1">خاصة</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
                             <label class="form-label" for="kgLogo">شعار الروضة</label>
-
                             <div class="position-relative">
                                 <input type="file" name="kgLogo" id="kgLogo" class="form-control pe-5" accept="image/*" />
                                 <img id="logoPreview" src="" alt="شعار الروضة"
                                     class="position-absolute end-0 top-50 translate-middle-y me-2 rounded"
                                     style="width: 32px; height: 32px; object-fit: cover; display: none;" />
                             </div>
-
                             <small id="logoNote" class="text-muted mt-1">قم برفع شعار الروضة إن وجد.</small>
                         </div>
-
                     </div>
-
                     <hr class="my-4" />
-@php
-$managers = App\Models\Manager::all();
-                                        @endphp
                     <!-- Manager Section -->
                     <h5 class="my-3">مدير الروضة</h5>
                     <div class="row mb-3 mt-0 g-3">
@@ -125,13 +125,12 @@ $managers = App\Models\Manager::all();
                         </div>
                     </div>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary me-sm-3 me-1">اضافة</button>
-                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">الغاء</button>
+                    <div class="mt-3 text-end">
+                        <button type="button" class="btn btn-label-danger me-2" data-bs-dismiss="modal">الغاء</button>
+                        <button type="submit" class="btn btn-primary me-2">اضافة</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
