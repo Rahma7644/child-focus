@@ -1,7 +1,8 @@
 <!-- Offcanvas to add new user -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
     <div class="offcanvas-header border-bottom">
-        <h5 id="offcanvasAddUserLabel" class="offcanvas-title"> اضافة {{ $role == 'Manager' ? 'مسؤول روضة' : ($role == 'Teacher' ? 'معلم' : ($role == 'Parent' ? 'ولي أمر' : 'مستخدم')) }}
+        <h5 id="offcanvasAddUserLabel" class="offcanvas-title"> اضافة {{ $role == 'Manager' ? 'مسؤول روضة' : ($role == 'Teacher' ? 'معلم' 
+        : ($role == 'Parent' ? 'ولي أمر' : 'مستخدم')) }}
         </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>

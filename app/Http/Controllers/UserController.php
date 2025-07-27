@@ -45,7 +45,8 @@ class UserController extends Controller
 
         $user = $this->userService->createUser($userData);
 
-        return redirect()->route('users.index', strtolower($userData['role']))->with('success', ' تمت اضافة المستخدم بنجاح !');
+        return redirect()->route('users.index', strtolower($userData['role']))->
+        with('success', ' تمت اضافة المستخدم بنجاح !');
     }
 
     /**
