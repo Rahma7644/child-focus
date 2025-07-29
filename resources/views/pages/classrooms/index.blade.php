@@ -136,7 +136,7 @@
                         </div>
                     @empty
                         <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-                            <p class="text-muted fs-5">لا توجد فصول دراسية حالياً.</p>
+                            <لا class="text-muted fs-5">لا توجد بيانات متاحة</p>
                         </div>
                     @endforelse
                 </div>

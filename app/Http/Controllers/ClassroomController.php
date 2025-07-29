@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomRequest;
+use App\Http\Requests\CTRequest;
 use App\Models\classroom;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ClassroomController extends Controller
 {
+
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -74,5 +85,42 @@ class ClassroomController extends Controller
     public function destroy(classroom $classroom)
     {
         //
+    }
+
+    public function attachTeacher(CTRequest $request, $id)
+    {
+        $classroom = Classroom::findOrFail($id);
+        $data = $request->validated();
+        $teacherId = $data['teacher_id'] ?? null;
+
+        DB::transaction(function () use (&$teacherId, $data, $classroom) {
+            if (!$teacherId) {
+
+                $userData = [
+                    'first_name' => $data['first_name'],
+                    'second_name' => $data['second_name'],
+                    'last_name' => $data['last_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'gender' => $data['gender'],
+                    'birth_date' => $data['birth_date'],
+                    'password' => Hash::make($data['password']),
+                    'role' => 'Teacher',
+                    'specialization' => $data['specialization'],
+                ];
+
+                $teacher = $this->userService->createUser($userData);
+                $teacherId = $teacher->id;
+            }
+
+            $classroom->teachers()->attach([$teacherId]);
+        });
+        return redirect()->route('classrooms.show', $classroom->id)->with('success', 'تمت اضافة المعلم للفصل الدراسي بنجاح !');
+    }
+
+    public function detachTeacher( $classroomId, $teacherId)
+    {
+        $classroom = Classroom::findOrFail($classroomId);
+        $classroom->teachers()->detach([$teacherId]);
     }
 }

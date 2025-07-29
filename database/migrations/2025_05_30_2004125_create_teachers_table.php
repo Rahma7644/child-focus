@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('kindergarten_id')->nullable();
+            $table->string('specialization');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('kindergarten_id')->references('id')->on('kindergartens')->onDelete('cascade');
         });
     }
 

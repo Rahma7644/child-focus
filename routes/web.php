@@ -31,9 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/kindergartens/{id}', [KindergartenController::class, 'update'])->name('kindergartens.update');
 
     // classrooms
+    Route::post('/classrooms/{id}/attach-teacher', [ClassroomController::class, 'attachTeacher'])->name('classrooms.teacher.attach');
+    Route::delete('/classrooms/{classroomId}/teachers/{teacherId}', [ClassroomController::class, 'detachTeacher'])->name('classrooms.teacher.detach');
+    
     Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
     Route::post('/classrooms', [ClassroomController::class,'store'])->name('classrooms.store');
     Route::get('/classrooms/{id}', [ClassroomController::class,'show'])->name('classrooms.show');
+
 });
 
 
