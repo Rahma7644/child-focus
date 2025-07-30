@@ -335,6 +335,7 @@ $(function () {
         $('.data-submit').text('تحديث');
     });
 
+    //reset
     offCanvasForm.on('hidden.bs.offcanvas', function () {
         fv.resetForm(true);
 
@@ -342,7 +343,7 @@ $(function () {
         $('#userForm').attr('action', `${baseUrl}users`);
         $('#userForm input[name="_method"]').remove();
 
-        // reset gender value
+        $('#kindergarten_id').val('').trigger('change');
         $('#gender').val('');
         // Reset title and button
         $('#offcanvasAddUserLabel').text('اضافة مستخدم');

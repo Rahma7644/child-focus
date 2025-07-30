@@ -1,9 +1,8 @@
 <!-- Offcanvas to add new user -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
     <div class="offcanvas-header border-bottom">
-        <h5 id="offcanvasAddUserLabel" class="offcanvas-title"> اضافة {{ $role == 'Manager' ? 'مسؤول روضة' : ($role == 'Teacher' ? 'معلم' : ($role == 'Parent' ? 'ولي أمر' : 'مستخدم')) }}
-        </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 id="offcanvasAddUserLabel" class="offcanvas-title">اضافة مستخدم</h5>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 p-6 h-100">
         <form class="add-new-user pt-0" id="userForm" method="POST" action="{{ route('users.store') }}">
@@ -76,8 +75,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary me-3 data-submit">اضافة</button>
-            <button type="reset" class="btn btn-label-danger" data-bs-dismiss="offcanvas">الغاء</button>
+            <div class="mt-3 text-end">
+                <button type="reset" class="btn btn-label-danger me-2" data-bs-dismiss="offcanvas">الغاء</button>
+                <button type="submit" class="btn btn-primary  data-submit">اضافة</button>
+            </div>
         </form>
     </div>
 </div>
