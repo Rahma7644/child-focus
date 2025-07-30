@@ -36,7 +36,7 @@ class UserService
 
         $relatedModel = match ($roleName) {
             'Manager' => $this->createManager($user),
-            'Teacher' => $this->createTeacher($user, $userData['specialization'] ?? null),
+            'Teacher' => $this->createTeacher($user, $userData),
             'Parent' => $this->createParent($user),
             default => null,
         };
@@ -59,11 +59,12 @@ class UserService
     /**
      * Create manager linked to the user.
      */
-    private function createTeacher(User $user, ?string $specialization = null): Teacher
+    private function createTeacher(User $user, array $userData): Teacher
     {
         return Teacher::create([
             'user_id' => $user->id,
-            'specialization'=> $specialization,
+            'kindergarten_id' => $userData['kindergarten_id'],
+            'specialization'=> $userData['specialization'],
         ]);
     }
 

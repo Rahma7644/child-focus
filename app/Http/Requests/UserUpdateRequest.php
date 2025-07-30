@@ -14,6 +14,16 @@ class UserUpdateRequest extends FormRequest
         return true;
     }
 
+    public function withValidator($validator)
+    {
+        $validator->sometimes('kindergarten_id', ['required', 'exists:kindergartens,id'], function ($input) {
+        return $input->role === 'Teacher';
+        });
+
+        $validator->sometimes('specialization', ['required', 'string', 'max:255'], function ($input) {
+            return $input->role === 'Teacher';
+        });
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +39,11 @@ class UserUpdateRequest extends FormRequest
             'phone' => 'required|digits:9|unique:users,phone,' .$this->id,
             'gender' => 'required|in:0,1',
             'birth_date' => 'required|date|before:today',
-            'password' => 'nullable|string|min:8|confirmed'
+            'password' => 'nullable|string|min:8|confirmed',
+
+            //teacher rules
+            'kindergarten_id' => 'nullable|exists:kindergartens,id',
+            'specialization' => 'nullable|string|max:55',
         ];
     }
 
@@ -66,6 +80,13 @@ class UserUpdateRequest extends FormRequest
             'password.string' => 'كلمة المرور يجب أن تكون نصاً.',
             'password.min' => 'كلمة المرور يجب أن تكون على الأقل 8 أحرف.',
             'password.confirmed' => 'كلمات المرور غير متطابقة.',
+
+            'kindergarten_id.required' => 'الروضة مطلوبة للمعلم.',
+            'kindergarten_id.exists' => 'الروضة المحددة غير موجودة.',
+
+            'specialization.required' => 'التخصص مطلوب للمعلم.',
+            'specialization.string' => 'التخصص يجب أن يكون نصاً.',
+            'specialization.max' => 'التخصص يجب ألا يتجاوز 255 حرفاً.',
         ];
     }
 }

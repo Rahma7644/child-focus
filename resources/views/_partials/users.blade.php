@@ -34,14 +34,28 @@
                         <span class="input-group-text">LY (+218)</span>
                     </div>
                 </div>
+                @if ($role == 'Teacher')
+                    <div class="col-sm-12">
+                        <label class="form-label" for="specialization">التخصص</label>
+                        <input type="text" id="specialization" name="specialization" class="form-control" placeholder="لغة عربية" />
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label" for="kindergarten_id">الروضة</label>
+                        <select class="select2 form-select" id="kindergarten_id" name="kindergarten_id">
+                            <option value="" disabled selected>اختر</option>
+                            @foreach ($kindergartens as $kindergarten)
+                                <option value="{{ $kindergarten->id }}">{{ $kindergarten->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 <div class="col-sm-12">
                     <label class="form-label" for="gender">الجنس</label>
-                    <select class="selectpicker w-auto" data-style="btn-transparent" data-icon-base="ti" data-tick-icon="ti-check text-white" id="gender" name="gender">
+                    <select class="select form-select" id="gender" name="gender">
                         <option value="" disabled selected>اختر</option>
                         <option value="0">ذكر</option>
                         <option value="1">أنثى</option>
                     </select>
-
                 </div>
                 <div class="col-sm-12">
                     <label class="form-label" for="birth_date">تاريخ الميلاد</label>

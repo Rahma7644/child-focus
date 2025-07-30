@@ -2,7 +2,7 @@
 
 @php
     $configData = Helper::appClasses();
-    $teachers = App\Models\Teacher::all();
+    $teachers = $classroom->kindergarten->teachers;
 @endphp
 
 @section('title', 'الفصل الدراسي')

@@ -106,6 +106,7 @@ class ClassroomController extends Controller
                     'birth_date' => $data['birth_date'],
                     'password' => Hash::make($data['password']),
                     'role' => 'Teacher',
+                    'kindergarten_id' => $classroom->kindergarten->id,
                     'specialization' => $data['specialization'],
                 ];
 

@@ -43,7 +43,7 @@ class UserController extends Controller
     {
         $userData = $request->validated();
 
-        $user = $this->userService->createUser($userData);
+        $this->userService->createUser($userData);
 
         return redirect()->route('users.index', strtolower($userData['role']))->with('success', ' تمت اضافة المستخدم بنجاح !');
     }
@@ -68,10 +68,17 @@ class UserController extends Controller
 
             // update password if it's provided
             if ($request->filled('password')) {
-               $data['password'] = Hash::make($request->password);
+                $data['password'] = Hash::make($request->password);
             }
 
             $user->update($data);
+
+            if ($user->hasRole('teacher')) {
+
+                $teacherData = $request->only(['specialization', 'kindergarten_id']);
+
+                $user->teacher->update($teacherData);
+            }
 
             return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
         } catch (\Exception $e) {

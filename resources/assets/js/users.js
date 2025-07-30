@@ -17,7 +17,7 @@ $(function () {
             select2.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-                placeholder: 'Select value',
+                placeholder: 'اختر',
                 dropdownParent: $this.parent()
             });
         });
@@ -305,6 +305,7 @@ $(function () {
     // edit record
     $(document).on('click', '.edit-record', function () {
         var userData = $(this).data('user');
+        console.log(userData);
         $('#userForm').data('mode', 'edit');
         $('#offcanvasAddUser').offcanvas('show');
 
@@ -315,6 +316,15 @@ $(function () {
         $('#phone').val(userData.phone);
         $('#gender').val(userData.gender);
         $('#birth_date').val(userData.birth_date);
+
+        if (userData.role === 'Teacher') {
+            $('#specialization').val(userData.specialization ?? '');
+            $('#kindergarten_id').val(userData.kindergarten_id).trigger('change');
+        } else {
+            // Clear those fields or hide them if needed
+            $('#specialization').val('');
+            $('#kindergarden_id').val(null).trigger('change');
+        }
 
         // Update form action to PUT
         $('#userForm').attr('action', `${baseUrl}users/${userData.id}`);
@@ -519,6 +529,36 @@ $(function () {
                         },
                         message: 'كلمات المرور غير متطابقة'
                     }
+                    }
+                },
+                kindergarten_id: {
+                    validators: {
+                        callback: {
+                            message: 'الرجاء اختيار الروضة',
+                            callback: function (input) {
+                                const role = userForm.querySelector('[name="role"]').value;
+                                return role !== 'Teacher' || input.value.trim() !== '';
+                            }
+                        }
+                    }
+                },
+                specialization: {
+                    validators: {
+                        callback: {
+                            message: 'التخصص مطلوب',
+                            callback: function (input) {
+                                const role = userForm.querySelector('[name="role"]').value;
+                                return role !== 'Teacher' || input.value.trim().length > 0;
+                            }
+                        },
+                        stringLength: {
+                            max: 55,
+                            message: 'يجب ألا يتجاوز التخصص 55 حرفاً'
+                        },
+                        regexp: {
+                            regexp: /^[\u0600-\u06FFa-zA-Z\s]+$/,
+                            message: 'التخصص يجب أن يحتوي على حروف فقط'
+                        }
                     }
                 }
         },

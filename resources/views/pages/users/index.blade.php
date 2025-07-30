@@ -1,5 +1,10 @@
 @extends('layouts/layoutMaster')
 
+@php
+    $configData = Helper::appClasses();
+    $kindergartens = App\Models\Kindergarten::all();
+@endphp
+
 @section('title', 'إدارة المستخدمين')
 
 <!-- Vendor Styles -->
@@ -90,8 +95,13 @@
                         <th>الاسم</th>
                         <th>البريد الالكتروني</th>
                         <th>رقم الهاتف</th>
-                        <th>تاريخ الميلاد</th>
-                        <th>الجنس</th>
+                        @if ($role == 'Teacher')
+                            <td>الروضة</td>
+                            <td>التخصص</td>
+                        @else
+                            <th>تاريخ الميلاد</th>
+                            <th>الجنس</th>
+                        @endif
                         <th>الحالة</th>
                         <th>الاجراءات</th>
                     </tr>
@@ -104,8 +114,13 @@
                             <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>0{{ $user->phone }}</td>
-                            <td>{{ $user->birth_date }}</td>
-                            <td>{{ $user->gender == '0' ? 'ذكر' : 'انثى' }}</td>
+                            @if ($role == 'Teacher')
+                                <td>{{ $user->teacher->kindergarten->name }}</td>
+                                <td>{{ $user->teacher->specialization }}</td>
+                            @else
+                                <td>{{ $user->birth_date }}</td>
+                                <td>{{ $user->gender == '0' ? 'ذكر' : 'انثى' }}</td>
+                            @endif
                             <td>
                                 <span class="{{ $user->is_active == '1' ? 'badge bg-label-success' : 'badge bg-label-danger' }}">
                                     {{ $user->is_active == '1' ? 'مفعل' : 'غير مفعل' }}
@@ -117,7 +132,7 @@
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill edit-record"
                                         data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasAddUser"
-                                        data-user='@json($user)'>
+                                        data-user='@json($user->toArray() + ["role" => $user->roles->first()->display_name, "specialization" => $user->teacher->specialization ?? null, "kindergarten_id" => $user->teacher->kindergarten_id ?? null])'>
                                             <i class="ti ti-edit ti-md"></i>
                                     </a>
                                     <a href="javascript:;"
