@@ -196,7 +196,7 @@ const fvClass = FormValidation.formValidation(classForm, {
         description: {
             validators: {
                 notEmpty: {
-                    message: 'وصف الفصل الدراسي مطلوبة'
+                    message: 'وصف الفصل الدراسي مطلوب'
                 },
             }
         },

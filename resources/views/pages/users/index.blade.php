@@ -3,6 +3,7 @@
 @php
     $configData = Helper::appClasses();
     $kindergartens = App\Models\Kindergarten::all();
+    $classrooms = App\Models\Classroom::all();
 @endphp
 
 @section('title', 'إدارة المستخدمين')
@@ -77,7 +78,7 @@
             </div>
             <div class="card-header border-bottom">
                 <h5 class="card-title mb-0">
-                    {{ $role == 'Manager' ? ' مسؤولي الروضات': ($role == 'Teacher' ? 'المعلمون' : ($role == 'Parent' ? 'أولياء الأمور' : 'المستخدمين')) }}
+                    {{ $role == 'Manager' ? ' مسؤولي الروضات': ($role == 'Teacher' ? 'المعلمين' : ($role == 'Child' ? 'الأطفال' : 'المستخدمين')) }}
                 </h5>
         </div>
         <div class="card-header border-bottom">
@@ -126,13 +127,22 @@
                                     {{ $user->is_active == '1' ? 'مفعل' : 'غير مفعل' }}
                                 </span>
                             </td>
+                            @php
+                                $userData = [
+                                    'user' => $user->toArray(),
+                                    'role' => $user->roles->first()->display_name,
+                                    'teacher' => $user->teacher,
+                                    'child' => $user->child,
+                                    'parents' => $user->child->parentts ?? [],
+                                ]
+                            @endphp
                             <td>
                                 <div class="d-flex align-items-center">
                                     <a href="javascript:;"
                                         class="btn btn-icon btn-text-secondary waves-effect waves-light rounded-pill edit-record"
                                         data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvasAddUser"
-                                        data-user='@json($user->toArray() + ["role" => $user->roles->first()->display_name, "specialization" => $user->teacher->specialization ?? null, "kindergarten_id" => $user->teacher->kindergarten_id ?? null])'>
+                                        data-user='@json($userData)'>
                                             <i class="ti ti-edit ti-md"></i>
                                     </a>
                                     <a href="javascript:;"

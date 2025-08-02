@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index($role)
     {
         // Validate the role
-        if (!in_array($role, ['manager', 'teacher', 'parent'])) {
+        if (!in_array($role, ['manager', 'teacher', 'child'])) {
             return abort(404, 'Role not found');
         }
 
@@ -54,32 +54,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
-
-            $data = $request->only([
-                'first_name',
-                'second_name',
-                'last_name',
-                'email',
-                'phone',
-                'gender',
-                'birth_date',
-            ]);
-
-            // update password if it's provided
-            if ($request->filled('password')) {
-                $data['password'] = Hash::make($request->password);
-            }
-
-            $user->update($data);
-
-            if ($user->hasRole('teacher')) {
-
-                $teacherData = $request->only(['specialization', 'kindergarten_id']);
-
-                $user->teacher->update($teacherData);
-            }
-
+            $this->userService->updateUser($request->validated(), $id);
             return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ أثناء تحديث المستخدم');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomRequest;
 use App\Http\Requests\CTRequest;
-use App\Models\classroom;
+use App\Models\Classroom;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +24,7 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        $classrooms = classroom::all();
+        $classrooms = Classroom::all();
         return view('pages.classrooms.index', compact('classrooms'));
     }
 
@@ -66,7 +66,7 @@ class ClassroomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(classroom $classroom)
+    public function edit(Classroom $classroom)
     {
         //
     }
@@ -74,7 +74,7 @@ class ClassroomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, classroom $classroom)
+    public function update(Request $request, Classroom $classroom)
     {
         //
     }

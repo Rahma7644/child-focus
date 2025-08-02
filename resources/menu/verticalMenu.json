@@ -22,9 +22,9 @@
             "slug": "users.teacher"
             },
             {
-            "url": "users/parent",
-            "name": "أولياء الأمور",
-            "slug": "users.parent"
+            "url": "users/child",
+            "name": "الأطفال",
+            "slug": "users.child"
             },
             {
             "url": "users/archive",
