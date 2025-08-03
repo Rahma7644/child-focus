@@ -19,7 +19,6 @@
         'resources/assets/vendor/libs/animate-css/animate.scss',
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
         'resources/assets/vendor/libs/bootstrap-select/bootstrap-select.scss',
-        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
         'resources/assets/vendor/libs/flatpickr/flatpickr.scss',
         'resources/assets/vendor/libs/pickr/pickr-themes.scss'
 
@@ -151,6 +150,13 @@
                                             <i class="ti ti-dots-vertical ti-md"></i>
                                     </a>
                                         <div class="dropdown-menu dropdown-menu-end m-0">
+                                            @if ($role === 'Manager')
+                                                <a href="{{ route('users.security', $user->id) }}"
+                                                class="dropdown-item">عرض</a>
+                                            @else
+                                            <a href="{{ route('users.show', $user->id) }}"
+                                                class="dropdown-item">عرض</a>
+                                            @endif
                                             @if(!$user->is_active)
                                                 <a href="javascript:;" class="delete-record dropdown-item" data-id="{{ $user->id }}">أرشفة</a>
                                             @endif

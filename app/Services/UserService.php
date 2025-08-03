@@ -171,5 +171,14 @@ class UserService
             }
         }
     }
+
+    public function updatePassword(array $data, int $id): bool
+    {
+        $user = User::findOrFail($id);
+        $user->update([
+            'password' => Hash::make($data['password']),
+        ]);
+        return true;
+    }
 }
 

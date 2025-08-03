@@ -305,7 +305,6 @@ $(function () {
     // edit record
     $(document).on('click', '.edit-record', function () {
     const userData = $(this).data('user');
-    console.log(userData);
 
     $('#userForm').data('mode', 'edit');
     $('#offcanvasAddUser').offcanvas('show');
@@ -367,7 +366,7 @@ $(function () {
     // UI updates
     $('#offcanvasAddUserLabel').text('تعديل المستخدم');
     $('.data-submit').text('تحديث');
-});
+    });
 
 
     //reset
@@ -698,7 +697,7 @@ $(function () {
                 'parents[0][phone]': {
                     validators: {
                         callback: {
-                            message: 'رقم الهاتف لولي الأمر الأول مطلوب وصحيح',
+                            message: 'رقم الهاتف لولي الأمر الأول مطلوب ',
                             callback: function(input) {
                                 if (role !== 'Child') return true;
                                 return /^\d{9}$/.test(input.value.trim());
@@ -807,5 +806,57 @@ $(function () {
                 }
             ]
             });
-        }
+        };
+
+
+    const passForm = document.getElementById('passForm');
+    const fp = FormValidation.formValidation(passForm, {
+        fields: {
+            password: {
+                validators: {
+                    callback: {
+                        message: 'كلمة المرور مطلوبة',
+                        callback: function(input) {
+                            return input.value.trim().length > 0;
+                        }
+                    }
+                    }
+                },
+                password_confirmation: {
+                    validators: {
+                    callback: {
+                        message: 'تأكيد كلمة المرور مطلوب',
+                        callback: function(input) {
+                        const passwordValue = passForm.querySelector('[name="password"]').value;
+                        return input.value.trim().length > 0 && input.value === passwordValue;
+                        }
+                    },
+                    identical: {
+                        compare: function() {
+                        return passForm.querySelector('[name="password"]').value;
+                        },
+                        message: 'كلمات المرور غير متطابقة'
+                    }
+                    }
+                }
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+            // Use this for enabling/changing valid/invalid class
+            // eleInvalidClass: '',
+            eleValidClass: '',
+            rowSelector: '.col-sm-6'
+            }),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+            submitButton: new FormValidation.plugins.SubmitButton()
+        },
+        }).on('core.form.valid', function () {
+            passForm.submit();
+        });
+
+        // clearing form data when offcanvas hidden
+        offCanvasForm.on('hidden.bs.offcanvas', function () {
+            fp.resetForm(true);
+        });
 });

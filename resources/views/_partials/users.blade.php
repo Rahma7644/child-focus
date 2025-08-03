@@ -84,11 +84,11 @@
                 @endif
                 <div class="col-sm-12">
                     <label class="form-label" for="password">كلمة المرور</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="********"/>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"/>
                 </div>
                 <div class="col-sm-12">
                     <label class="form-label" for="password_confirmation">تاكيد كلمة المرور</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="********" />
+                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                 </div>
                 @if ($role == 'Child')
                 <hr class="my-3" />

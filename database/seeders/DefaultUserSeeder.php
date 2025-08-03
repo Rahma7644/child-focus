@@ -10,18 +10,20 @@ class DefaultUserSeeder extends Seeder
 {
     public function run()
     {
-        User::firstOrCreate(
+        $user = User::firstOrCreate(
             ['phone' => '921234567'],
             [
-            'first_name' => 'Test',
+            'first_name' => 'Super',
             'second_name' => 'User',
-            'last_name' => 'One',
-            'email' => 'testuser@example.com',
+            'last_name' => 'Admin',
+            'email' => 'super_admin@cf.com',
             'birth_date' => '1990-01-01',
-            'gender' => 1, // Or 0, depending on your logic
+            'gender' => 1,
             'is_active' => 1,
             'password' => Hash::make('password'),
             ]
         );
+
+        $user->addRole('Super-admin');
     }
 }

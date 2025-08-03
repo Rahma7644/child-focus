@@ -49,13 +49,33 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('pages.users.show', compact('user'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('pages.users.security', compact('user'));
+    }
+    /**
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $this->userService->updateUser($request->validated(), $id);
-            return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
+            if ($request->input('mode') === 'password') {
+                $this->userService->updatePassword($request->validated(), $id);
+                return redirect()->back()->with('success', 'تم تحديث كلمة مرورالمستخدم بنجاح');
+            } else {
+                $this->userService->updateUser($request->validated(), $id);
+                return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
+            }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ أثناء تحديث المستخدم');
         }

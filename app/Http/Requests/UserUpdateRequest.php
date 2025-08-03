@@ -58,6 +58,12 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->input('mode') === 'password') {
+            return [
+                'password' => 'required|string|min:8|confirmed',
+            ];
+        }
+
         return [
             'first_name' => 'required|string|max:10',
             'second_name' => 'required|string|max:10',

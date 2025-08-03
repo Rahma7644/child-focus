@@ -13,7 +13,7 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = ['super-admin', 'manager', 'parent', 'teacher', 'child'];
+        $roles = ['super-admin', 'manager', 'teacher', 'child'];
 
         foreach ($roles as $role) {
             Role::create([

@@ -14,7 +14,9 @@ Route::middleware('auth:sanctum')->group(function () {
     //users
     Route::get('/users/archive', [UserController::class, 'archive'])->name('users.archive');
     Route::get('/users/{role}', [UserController::class, 'index'])->name('users.index');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}/show', [UserController::class,'show'])->name('users.show');
+    Route::get('/users/{id}/security', [UserController::class,'edit'])->name('users.security');
+    Route::post('/users', [UserController::class, 'store'])->name(name: 'users.store');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -33,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // classrooms
     Route::post('/classrooms/{id}/attach-teacher', [ClassroomController::class, 'attachTeacher'])->name('classrooms.teacher.attach');
     Route::delete('/classrooms/{classroomId}/teachers/{teacherId}', [ClassroomController::class, 'detachTeacher'])->name('classrooms.teacher.detach');
-    
+
     Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
     Route::post('/classrooms', [ClassroomController::class,'store'])->name('classrooms.store');
     Route::get('/classrooms/{id}', [ClassroomController::class,'show'])->name('classrooms.show');
