@@ -3,17 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClassroomRequest;
-use App\Models\classroom;
+use App\Http\Requests\CTRequest;
+use App\Models\Classroom;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ClassroomController extends Controller
 {
+
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $classrooms = classroom::all();
+        $classrooms = Classroom::all();
         return view('pages.classrooms.index', compact('classrooms'));
     }
 
@@ -55,7 +66,7 @@ class ClassroomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(classroom $classroom)
+    public function edit(Classroom $classroom)
     {
         //
     }
@@ -63,7 +74,7 @@ class ClassroomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, classroom $classroom)
+    public function update(Request $request, Classroom $classroom)
     {
         //
     }
@@ -74,5 +85,43 @@ class ClassroomController extends Controller
     public function destroy(classroom $classroom)
     {
         //
+    }
+
+    public function attachTeacher(CTRequest $request, $id)
+    {
+        $classroom = Classroom::findOrFail($id);
+        $data = $request->validated();
+        $teacherId = $data['teacher_id'] ?? null;
+
+        DB::transaction(function () use (&$teacherId, $data, $classroom) {
+            if (!$teacherId) {
+
+                $userData = [
+                    'first_name' => $data['first_name'],
+                    'second_name' => $data['second_name'],
+                    'last_name' => $data['last_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'gender' => $data['gender'],
+                    'birth_date' => $data['birth_date'],
+                    'password' => Hash::make($data['password']),
+                    'role' => 'Teacher',
+                    'kindergarten_id' => $classroom->kindergarten->id,
+                    'specialization' => $data['specialization'],
+                ];
+
+                $teacher = $this->userService->createUser($userData);
+                $teacherId = $teacher->id;
+            }
+
+            $classroom->teachers()->attach([$teacherId]);
+        });
+        return redirect()->route('classrooms.show', $classroom->id)->with('success', 'تمت اضافة المعلم للفصل الدراسي بنجاح !');
+    }
+
+    public function detachTeacher( $classroomId, $teacherId)
+    {
+        $classroom = Classroom::findOrFail($classroomId);
+        $classroom->teachers()->detach([$teacherId]);
     }
 }

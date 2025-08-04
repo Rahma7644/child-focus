@@ -59,14 +59,14 @@ class User extends Authenticatable
         return $this->hasOne(Manager::class);
     }
 
-    public function parentt()
-    {
-        return $this->hasOne(Parentt::class);
-    }
-
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
+    }
+
+    public function child()
+    {
+        return $this->hasOne(Child::class);
     }
 
     public function reports()

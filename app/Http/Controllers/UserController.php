@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index($role)
     {
         // Validate the role
-        if (!in_array($role, ['manager', 'teacher', 'parent'])) {
+        if (!in_array($role, ['manager', 'teacher', 'child'])) {
             return abort(404, 'Role not found');
         }
 
@@ -43,38 +43,40 @@ class UserController extends Controller
     {
         $userData = $request->validated();
 
-        $user = $this->userService->createUser($userData);
+        $this->userService->createUser($userData);
 
         return redirect()->route('users.index', strtolower($userData['role']))->
         with('success', ' تمت اضافة المستخدم بنجاح !');
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('pages.users.show', compact('user'));
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('pages.users.security', compact('user'));
+    }
+    /**
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
-
-            $data = $request->only([
-                'first_name',
-                'second_name',
-                'last_name',
-                'email',
-                'phone',
-                'gender',
-                'birth_date',
-            ]);
-
-            // update password if it's provided
-            if ($request->filled('password')) {
-               $data['password'] = Hash::make($request->password);
+            if ($request->input('mode') === 'password') {
+                $this->userService->updatePassword($request->validated(), $id);
+                return redirect()->back()->with('success', 'تم تحديث كلمة مرورالمستخدم بنجاح');
+            } else {
+                $this->userService->updateUser($request->validated(), $id);
+                return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
             }
-
-            $user->update($data);
-
-            return redirect()->back()->with('success', 'تم تحديث بيانات المستخدم بنجاح');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'حدث خطأ أثناء تحديث المستخدم');
         }

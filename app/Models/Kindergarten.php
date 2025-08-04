@@ -20,6 +20,11 @@ class Kindergarten extends Model
         return $this->belongsTo(Manager::class);
     }
 
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
     public function classrooms()
     {
         return $this->hasMany(Classroom::class);

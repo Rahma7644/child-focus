@@ -262,204 +262,204 @@ $(function () {
         $('.dataTables_length .form-select').removeClass('form-select-sm');
     }, 300);
 
-const kgForm = document.getElementById('kgForm');
-const fvKg = FormValidation.formValidation(kgForm, {
-    fields: {
-        // Kindergarten fields
-        kgName: {
-            validators: {
-                notEmpty: {
-                    message: 'اسم الروضة مطلوب'
-                }
-            }
-        },
-        kgLocation: {
-            validators: {
-                notEmpty: {
-                    message: 'عنوان الروضة مطلوب'
-                }
-            }
-        },
-        kgPhone: {
-            validators: {
-                notEmpty: {
-                    message: 'رقم الهاتف مطلوب'
-                },
-                regexp: {
-                    regexp: /^[0-9]{9}$/,
-                    message: 'رقم الهاتف يجب أن يتكون من 9 أرقام'
-                }
-            }
-        },
-        kgType: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار نوع الروضة',
-                    callback: function(input) {
-                        return input.value !== '';
+    const kgForm = document.getElementById('kgForm');
+    const fvKg = FormValidation.formValidation(kgForm, {
+        fields: {
+            // Kindergarten fields
+            kgName: {
+                validators: {
+                    notEmpty: {
+                        message: 'اسم الروضة مطلوب'
                     }
-                }
-            }
-        },
-        kgLogo: {
-            validators: {
-                file: {
-                    extension: 'jpg,jpeg,png,gif,webp',
-                    type: 'image/jpeg,image/png,image/gif,image/webp',
-                    message: 'صيغة الملف غير صحيحة. الرجاء رفع صورة'
-                }
-            }
-        },
-        manager_id: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار مدير الروضة',
-                    callback: function(input) {
-                    const isSelect2Hidden = $('#manager_id').next('.select2-container').css('display') === 'none';
-                    const hasValue = input.value !== '';
-                    return isSelect2Hidden || hasValue;
-                    }
-                }
                 }
             },
-
-
-        // Manager fields (conditionally required)
-        first_name: {
-            validators: {
-                callback: {
-                    message: 'الاسم الاول مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+            kgLocation: {
+                validators: {
+                    notEmpty: {
+                        message: 'عنوان الروضة مطلوب'
                     }
                 }
-            }
-        },
-        second_name: {
-            validators: {
-                callback: {
-                    message: 'الاسم الثاني مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        last_name: {
-            validators: {
-                callback: {
-                    message: 'اللقب مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        email: {
-            validators: {
-                callback: {
-                    message: 'البريد الالكتروني مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                },
-                emailAddress: {
-                    message: 'البريد الالكتروني غير صالح'
-                }
-            }
-        },
-        phone: {
-            validators: {
-                callback: {
-                    message: 'رقم الهاتف مطلوب',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        gender: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار الجنس',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim() !== '' : true;
-                    }
-                }
-            }
-        },
-        birth_date: {
-            validators: {
-                callback: {
-                    message: 'الرجاء اختيار تاريخ الميلاد',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                },
-                date: {
-                    format: 'YYYY-MM-DD',
-                    message: 'صيغة التاريخ غير صحيحة. يجب أن تكون مثل 2025-01-01'
-                }
-            }
-        },
-        password: {
-            validators: {
-                callback: {
-                    message: 'كلمة المرور مطلوبة',
-                    callback: function (input) {
-                        return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
-                    }
-                }
-            }
-        },
-        password_confirmation: {
-            validators: {
-                callback: {
-                    message: 'تأكيد كلمة المرور مطلوب',
-                    callback: function (input) {
-                        if (!$('#newUserFields').is(':visible')) return true;
-
-                        const passwordValue = kgForm.querySelector('[name="password"]').value;
-                        return input.value.trim().length > 0 && input.value === passwordValue;
-                    }
-                },
-                identical: {
-                    compare: function () {
-                        return kgForm.querySelector('[name="password"]').value;
+            },
+            kgPhone: {
+                validators: {
+                    notEmpty: {
+                        message: 'رقم الهاتف مطلوب'
                     },
-                    message: 'كلمات المرور غير متطابقة'
+                    regexp: {
+                        regexp: /^[0-9]{9}$/,
+                        message: 'رقم الهاتف يجب أن يتكون من 9 أرقام'
+                    }
+                }
+            },
+            kgType: {
+                validators: {
+                    callback: {
+                        message: 'الرجاء اختيار نوع الروضة',
+                        callback: function(input) {
+                            return input.value !== '';
+                        }
+                    }
+                }
+            },
+            kgLogo: {
+                validators: {
+                    file: {
+                        extension: 'jpg,jpeg,png,gif,webp',
+                        type: 'image/jpeg,image/png,image/gif,image/webp',
+                        message: 'صيغة الملف غير صحيحة. الرجاء رفع صورة'
+                    }
+                }
+            },
+            manager_id: {
+                validators: {
+                    callback: {
+                        message: 'الرجاء اختيار مدير الروضة',
+                        callback: function(input) {
+                        const isSelect2Hidden = $('#manager_id').next('.select2-container').css('display') === 'none';
+                        const hasValue = input.value !== '';
+                        return isSelect2Hidden || hasValue;
+                        }
+                    }
+                    }
+                },
+
+
+            // Manager fields (conditionally required)
+            first_name: {
+                validators: {
+                    callback: {
+                        message: 'الاسم الاول مطلوب',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    }
+                }
+            },
+            second_name: {
+                validators: {
+                    callback: {
+                        message: 'الاسم الثاني مطلوب',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    }
+                }
+            },
+            last_name: {
+                validators: {
+                    callback: {
+                        message: 'اللقب مطلوب',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    callback: {
+                        message: 'البريد الالكتروني مطلوب',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    },
+                    emailAddress: {
+                        message: 'البريد الالكتروني غير صالح'
+                    }
+                }
+            },
+            phone: {
+                validators: {
+                    callback: {
+                        message: 'رقم الهاتف مطلوب',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    }
+                }
+            },
+            gender: {
+                validators: {
+                    callback: {
+                        message: 'الرجاء اختيار الجنس',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim() !== '' : true;
+                        }
+                    }
+                }
+            },
+            birth_date: {
+                validators: {
+                    callback: {
+                        message: 'الرجاء اختيار تاريخ الميلاد',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD',
+                        message: 'صيغة التاريخ غير صحيحة. يجب أن تكون مثل 2025-01-01'
+                    }
+                }
+            },
+            password: {
+                validators: {
+                    callback: {
+                        message: 'كلمة المرور مطلوبة',
+                        callback: function (input) {
+                            return $('#newUserFields').is(':visible') ? input.value.trim().length > 0 : true;
+                        }
+                    }
+                }
+            },
+            password_confirmation: {
+                validators: {
+                    callback: {
+                        message: 'تأكيد كلمة المرور مطلوب',
+                        callback: function (input) {
+                            if (!$('#newUserFields').is(':visible')) return true;
+
+                            const passwordValue = kgForm.querySelector('[name="password"]').value;
+                            return input.value.trim().length > 0 && input.value === passwordValue;
+                        }
+                    },
+                    identical: {
+                        compare: function () {
+                            return kgForm.querySelector('[name="password"]').value;
+                        },
+                        message: 'كلمات المرور غير متطابقة'
+                    }
                 }
             }
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+                // Use this for enabling/changing valid/invalid class
+                // eleInvalidClass: '',
+                eleValidClass: '',
+                rowSelector: '.col-sm-12, .col-sm-6, .col-sm-4'
+            }),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+            submitButton: new FormValidation.plugins.SubmitButton()
+
         }
-    },
-    plugins: {
-        trigger: new FormValidation.plugins.Trigger(),
-        bootstrap5: new FormValidation.plugins.Bootstrap5({
-            // Use this for enabling/changing valid/invalid class
-            // eleInvalidClass: '',
-            eleValidClass: '',
-            rowSelector: '.col-sm-12, .col-sm-6, .col-sm-4'
-        }),
-        autoFocus: new FormValidation.plugins.AutoFocus(),
-        submitButton: new FormValidation.plugins.SubmitButton()
+    }).on('core.form.valid', function () {
+        kgForm.submit();
+    });
 
-    }
-}).on('core.form.valid', function () {
-    kgForm.submit();
-});
+        if (flatpickrDisabledRange) {
+            const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
+            const toDate = new Date(Date.now() + 3600 * 1000 * 48);
 
-    if (flatpickrDisabledRange) {
-        const fromDate = new Date(Date.now() - 3600 * 1000 * 48);
-        const toDate = new Date(Date.now() + 3600 * 1000 * 48);
-
-        flatpickrDisabledRange.flatpickr({
-        dateFormat: 'Y-m-d',
-        disable: [
-            {
-            from: fromDate.toISOString().split('T')[0],
-            to: toDate.toISOString().split('T')[0]
-            }
-        ]
-        });
-    }
+            flatpickrDisabledRange.flatpickr({
+            dateFormat: 'Y-m-d',
+            disable: [
+                {
+                from: fromDate.toISOString().split('T')[0],
+                to: toDate.toISOString().split('T')[0]
+                }
+            ]
+            });
+        }
 });

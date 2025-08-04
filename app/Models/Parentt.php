@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Parentt extends Model
 {
-    protected $fillable = ['user_id'];
+    protected $fillable = [
+        "child_id",
+        "name",
+        "work_address",
+        "phone",
+        "relationship",
+    ];
 
-    public function user()
+    public function child()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Child::class);
     }
 }

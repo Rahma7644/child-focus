@@ -17,7 +17,7 @@ $(function () {
             select2.each(function () {
             var $this = $(this);
             $this.wrap('<div class="position-relative"></div>').select2({
-                placeholder: 'Select value',
+                placeholder: 'اختر',
                 dropdownParent: $this.parent()
             });
         });
@@ -304,27 +304,72 @@ $(function () {
 
     // edit record
     $(document).on('click', '.edit-record', function () {
-        var userData = $(this).data('user');
-        $('#userForm').data('mode', 'edit');
-        $('#offcanvasAddUser').offcanvas('show');
+    const userData = $(this).data('user');
 
-        $('#first_name').val(userData.first_name);
-        $('#second_name').val(userData.second_name);
-        $('#last_name').val(userData.last_name);
-        $('#email').val(userData.email);
-        $('#phone').val(userData.phone);
-        $('#gender').val(userData.gender);
-        $('#birth_date').val(userData.birth_date);
+    $('#userForm').data('mode', 'edit');
+    $('#offcanvasAddUser').offcanvas('show');
 
-        // Update form action to PUT
-        $('#userForm').attr('action', `${baseUrl}users/${userData.id}`);
+    const user = userData.user;
+
+    $('#first_name').val(user.first_name);
+    $('#second_name').val(user.second_name);
+    $('#last_name').val(user.last_name);
+    $('#email').val(user.email);
+    $('#phone').val(user.phone);
+    $('#gender').val(user.gender);
+    $('#birth_date').val(user.birth_date);
+
+    // Role-specific fields
+    if (userData.role === 'Teacher') {
+        $('#specialization').val(userData.teacher?.specialization ?? '');
+        $('#kindergarten_id').val(userData.teacher?.kindergarten_id ?? '').trigger('change');
+    } else if (userData.role === 'Child') {
+        $('#classroom_id').val(userData.child?.classroom_id ?? '').trigger('change');
+        $('#nationality').val(userData.child?.nationality ?? '');
+        $('#address').val(userData.child?.address ?? '');
+        $('#description').val(userData.child?.description ?? '');
+        // Fill in parent data
+        const parents = userData.parents ?? [];
+        // First parent
+        if (parents[0]) {
+            $('[name="parents[0][name]"]').val(parents[0].name);
+            $('[name="parents[0][relationship]"]').val(parents[0].relationship);
+            $('[name="parents[0][phone]"]').val(parents[0].phone);
+            $('[name="parents[0][work_address]"]').val(parents[0].work_address);
+        }
+        // Second parent
+        if (parents[1]) {
+            $('#parent-1').removeClass('d-none'); // show the second parent block
+            $('[name="parents[1][name]"]').val(parents[1].name);
+            $('[name="parents[1][relationship]"]').val(parents[1].relationship);
+            $('[name="parents[1][phone]"]').val(parents[1].phone);
+            $('[name="parents[1][work_address]"]').val(parents[1].work_address);
+        } else {
+            // Clear second parent fields and hide the block if not used
+            $('#parent-1').addClass('d-none');
+            $('[name="parents[1][name]"]').val('');
+            $('[name="parents[1][relationship]"]').val('');
+            $('[name="parents[1][phone]"]').val('');
+            $('[name="parents[1][work_address]"]').val('');
+        }
+    }else {
+        $('#specialization').val('');
+        $('#kindergarten_id').val(null).trigger('change');
+    }
+
+    // Update form action and method
+    $('#userForm').attr('action', `${baseUrl}users/${user.id}`);
+    if (!$('#userForm input[name="_method"]').length) {
         $('#userForm').append('<input type="hidden" name="_method" value="PUT">');
+    }
 
-        // Change title and button text
-        $('#offcanvasAddUserLabel').text('تعديل المستخدم');
-        $('.data-submit').text('تحديث');
+    // UI updates
+    $('#offcanvasAddUserLabel').text('تعديل المستخدم');
+    $('.data-submit').text('تحديث');
     });
 
+
+    //reset
     offCanvasForm.on('hidden.bs.offcanvas', function () {
         fv.resetForm(true);
 
@@ -332,13 +377,29 @@ $(function () {
         $('#userForm').attr('action', `${baseUrl}users`);
         $('#userForm input[name="_method"]').remove();
 
-        // reset gender value
+        $('#kindergarten_id').val('').trigger('change');
         $('#gender').val('');
         // Reset title and button
         $('#offcanvasAddUserLabel').text('اضافة مستخدم');
         $('.data-submit').text('اضافة');
 
         $('#userForm').removeData('mode');
+    });
+
+    //parents info
+    const $addParentBtn = $('#add-parent-btn');
+    const $secondParent = $('#parent-1');
+    const $removeParentBtn = $('#remove-parent-btn');
+
+    $addParentBtn.on('click', function () {
+        $secondParent.removeClass('d-none');
+        $addParentBtn.prop('disabled', true);
+    });
+
+    $removeParentBtn.on('click', function () {
+        $secondParent.find('input').val('');
+        $secondParent.addClass('d-none');
+        $addParentBtn.prop('disabled', false);
     });
 
     // toggle status
@@ -401,6 +462,7 @@ $(function () {
 
     // validation
     const userForm = document.getElementById('userForm');
+    const role = userForm.querySelector('[name="role"]').value;
     const fv = FormValidation.formValidation(userForm, {
         fields: {
             first_name: {
@@ -520,7 +582,196 @@ $(function () {
                         message: 'كلمات المرور غير متطابقة'
                     }
                     }
-                }
+                },
+                // Teacher fields
+                kindergarten_id: {
+                    validators: {
+                        callback: {
+                            message: 'الرجاء اختيار الروضة',
+                            callback: function (input) {
+                                return role !== 'Teacher' || input.value.trim() !== '';
+                            }
+                        }
+                    }
+                },
+                specialization: {
+                    validators: {
+                        callback: {
+                            message: 'التخصص مطلوب',
+                            callback: function (input) {
+                                return role !== 'Teacher' || input.value.trim().length > 0;
+                            }
+                        },
+                        stringLength: {
+                            max: 55,
+                            message: 'يجب ألا يتجاوز التخصص 55 حرفاً'
+                        },
+                        regexp: {
+                            regexp: /^[\u0600-\u06FFa-zA-Z\s]+$/,
+                            message: 'التخصص يجب أن يحتوي على حروف فقط'
+                        }
+                    }
+                },
+                //child fields
+                classroom_id: {
+                    validators: {
+                        callback: {
+                            message: 'الرجاء اختيار الفصل الدراسي',
+                            callback: function(input) {
+                                return role !== 'Child' || input.value.trim() !== '';
+                            }
+                        }
+                    }
+                },
+                address: {
+                    validators: {
+                        callback: {
+                            message: 'العنوان مطلوب',
+                            callback: function(input) {
+                                return role !== 'Child' || input.value.trim() !== '';
+                            }
+                        },
+                        stringLength: {
+                            max: 255,
+                            message: 'العنوان يجب ألا يتجاوز 255 حرفاً'
+                        }
+                    }
+                },
+                nationality: {
+                    validators: {
+                        callback: {
+                            message: 'الجنسية مطلوبة',
+                            callback: function(input) {
+                                return role !== 'Child' || input.value.trim() !== '';
+                            }
+                        },
+                        stringLength: {
+                            max: 100,
+                            message: 'الجنسية يجب ألا يتجاوز 100 حرفاً'
+                        }
+                    }
+                },
+                description: {
+                    validators: {
+                        stringLength: {
+                            max: 500,
+                            message: 'الملاحظات يجب ألا تتجاوز 225 حرفاً'
+                        }
+                    }
+                },
+
+                // Parents fields: Validate at least the first parent is fully filled, second parent optional
+
+                'parents[0][name]': {
+                    validators: {
+                        callback: {
+                            message: 'اسم ولي الأمر الأول مطلوب',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                return input.value.trim().length > 0;
+                            }
+                        },
+                        stringLength: {
+                            max: 100,
+                            message: 'اسم ولي الأمر يجب ألا يتجاوز 100 حرفاً'
+                        }
+                    }
+                },
+
+                'parents[0][relationship]': {
+                    validators: {
+                        callback: {
+                            message: 'صلة القرابة لولي الأمر الأول مطلوبة',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                return input.value.trim().length > 0;
+                            }
+                        },
+                        stringLength: {
+                            max: 100,
+                            message: 'صلة القرابة يجب ألا تتجاوز 100 حرف.'
+                        }
+                    }
+                },
+
+                'parents[0][phone]': {
+                    validators: {
+                        callback: {
+                            message: 'رقم الهاتف لولي الأمر الأول مطلوب ',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                return /^\d{9}$/.test(input.value.trim());
+                            }
+                        }
+                    }
+                },
+
+                'parents[0][work_address]': {
+                    validators: {
+                        callback: {
+                            message: 'عنوان العمل لولي الأمر الأول مطلوبة',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                return input.value.trim().length > 0;
+                            }
+                        },
+                        stringLength: {
+                            max: 100,
+                            message: 'عنوان العمل يجب ألا يتجاوز 100 حرف.'
+                        }
+                    }
+                },
+
+                // Second parent - optional but if filled, fields must be valid
+
+                'parents[1][name]': {
+                    validators: {
+                        callback: {
+                            message: 'اسم ولي الأمر الثاني غير صالح',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                if (input.value.trim() === '') return true;
+                                return input.value.trim().length <= 100;
+                            }
+                        }
+                    }
+                },
+
+                'parents[1][relationship]': {
+                    validators: {
+                        callback: {
+                            message: 'صلة القرابة لولي الأمر الثاني غير صالحة',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                if (input.value.trim() === '') return true;
+                                return input.value.trim().length <= 100;
+                            }
+                        }
+                    }
+                },
+
+                'parents[1][phone]': {
+                    validators: {
+                        callback: {
+                            message: 'رقم الهاتف لولي الأمر الثاني يجب أن يكون 9 أرقام',
+                            callback: function(input) {
+                                if (role !== 'Child') return true;
+                                if (input.value.trim() === '') return true; // optional
+                                return /^\d{9}$/.test(input.value.trim());
+                            }
+                        }
+                    }
+                },
+
+                'parents[1][work_address]': {
+                    validators: {
+                        stringLength: {
+                            max: 255,
+                            message: 'عنوان العمل يجب ألا يتجاوز 255 حرفاً'
+                        }
+                    }
+                },
+
         },
         plugins: {
             trigger: new FormValidation.plugins.Trigger(),
@@ -532,7 +783,7 @@ $(function () {
             }),
             autoFocus: new FormValidation.plugins.AutoFocus(),
             submitButton: new FormValidation.plugins.SubmitButton()
-        }
+        },
         }).on('core.form.valid', function () {
             userForm.submit();
         });
@@ -555,5 +806,57 @@ $(function () {
                 }
             ]
             });
-        }
+        };
+
+
+    const passForm = document.getElementById('passForm');
+    const fp = FormValidation.formValidation(passForm, {
+        fields: {
+            password: {
+                validators: {
+                    callback: {
+                        message: 'كلمة المرور مطلوبة',
+                        callback: function(input) {
+                            return input.value.trim().length > 0;
+                        }
+                    }
+                    }
+                },
+                password_confirmation: {
+                    validators: {
+                    callback: {
+                        message: 'تأكيد كلمة المرور مطلوب',
+                        callback: function(input) {
+                        const passwordValue = passForm.querySelector('[name="password"]').value;
+                        return input.value.trim().length > 0 && input.value === passwordValue;
+                        }
+                    },
+                    identical: {
+                        compare: function() {
+                        return passForm.querySelector('[name="password"]').value;
+                        },
+                        message: 'كلمات المرور غير متطابقة'
+                    }
+                    }
+                }
+        },
+        plugins: {
+            trigger: new FormValidation.plugins.Trigger(),
+            bootstrap5: new FormValidation.plugins.Bootstrap5({
+            // Use this for enabling/changing valid/invalid class
+            // eleInvalidClass: '',
+            eleValidClass: '',
+            rowSelector: '.col-sm-6'
+            }),
+            autoFocus: new FormValidation.plugins.AutoFocus(),
+            submitButton: new FormValidation.plugins.SubmitButton()
+        },
+        }).on('core.form.valid', function () {
+            passForm.submit();
+        });
+
+        // clearing form data when offcanvas hidden
+        offCanvasForm.on('hidden.bs.offcanvas', function () {
+            fp.resetForm(true);
+        });
 });
